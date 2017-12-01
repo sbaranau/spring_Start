@@ -1,0 +1,37 @@
+<section>
+    <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-inner">
+            <div class="col-sm-3">
+                <h2 style="margin-top:5px;">
+                    {{vm.data.organization}}
+                </h2>
+            </div>
+
+            <div class="col-sm-8">
+                <h2 class="header_menu_align">
+                    <a ng-repeat="link in vm.menu" href="{{link.link}}" translate="{{link.name}}"></a>
+                </h2>
+            </div>
+
+            <div class="btn-group pull-right">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span class="hidden-sm hidden-xs">{{vm.data.userName}}</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="{{baseUrl}}/app#/users/{{vm.data.userId}}/view" translate="header.userInfo"></a></li>
+                    <li class="divider" />
+                    <li><a href="{{baseUrl}}/app#/settings/password" translate="header.change"></a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{baseUrl}}/logout.html" translate="header.exit"></a></li>
+                </ul>
+            </div>
+            <button class="navbar-toggle pull-left animated flip" type="button">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+    </div>
+</section>

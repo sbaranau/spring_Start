@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="julia.dao.GroupDao">
+
+    <resultMap id="group" type="group">
+        <id column="ID"         property="id" />
+        <result column="NAME"   property="name" />
+    </resultMap>
+
+    <insert id="create" parameterType="group" keyProperty="id">
+        INSERT INTO ${db.schema}.groups (id, name)
+        VALUES (#{id}, #{name})
+    </insert>
+
+    <select id="read" parameterType="long" resultMap="group">
+        SELECT id, name
+        FROM ${db.schema}.groups
+        WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="group">
+        UPDATE ${db.schema}.groups
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM ${db.schema}.groups
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findByName" parameterType="string" resultMap="group">
+        SELECT id, name
+        FROM ${db.schema}.groups
+        WHERE name = #{name}
+    </select>
+
+    <select id="findAll" resultMap="group">
+        SELECT id, name
+        FROM ${db.schema}.groups
+        ORDER BY id
+    </select>
+
+    <select id="findUsersGroups" parameterType="long" resultMap="group">
+        SELECT g.id, g.name
+        FROM ${db.schema}.user_groups ug
+            LEFT JOIN ${db.schema}.groups g ON ug.group_id = g.id
+        WHERE ug.user_id = #{uid}
+    </select>
+
+    <insert id="setUsersGroups" parameterType="map">
+        INSERT INTO ${db.schema}.user_groups (user_id, group_id)
+        VALUES (#{uid}, #{gid})
+    </insert>
+
+    <delete id="deleteUsersGroups" parameterType="long">
+        DELETE FROM ${db.schema}.user_groups
+        WHERE user_id = #{uid}
+    </delete>
+
+    <select id="getMaxId" resultType="long">
+        SELECT max(id)
+        FROM ${db.schema}.groups
+    </select>
+
+    <select id="findGroupsByUserId" resultMap="group" parameterType="long">
+        SELECT g.id, g."name" FROM main.groups g
+            LEFT JOIN ${db.schema}.user_groups ug ON g.id = ug.group_id
+        WHERE ug.user_id = #{id}
+    </select>
+
+    <select id="findGroupByName" resultMap="group" parameterType="string">
+        SELECT id, "name" FROM ${db.schema}.groups WHERE name = #{name}
+    </select>
+
+    <select id="findRolesIds" parameterType="long" resultType="long">
+        SELECT
+            role_id
+        FROM
+            ${db.schema}.group_roles
+        WHERE
+            group_id = #{id}
+    </select>
+</mapper>

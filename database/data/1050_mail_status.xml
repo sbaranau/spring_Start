@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="data/1050_mail_status.xml">
+
+    <changeSet id="0.0.1_1050" author="Vadim Marchuk">
+        <comment>Insert data into table "mail_status"</comment>
+        <insert tableName="mail_status" schemaName="${db.schema}">
+            <column name="id">1</column>
+            <column name="name">NEW</column>
+        </insert>
+        <insert tableName="mail_status" schemaName="${db.schema}">
+            <column name="id">2</column>
+            <column name="name">SENT</column>
+        </insert>
+        <insert tableName="mail_status" schemaName="${db.schema}">
+            <column name="id">3</column>
+            <column name="name">UNSENT</column>
+        </insert>
+        <rollback>
+            <delete tableName="mail_status" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

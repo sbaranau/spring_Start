@@ -1,0 +1,14 @@
+.fixInput {
+	width: 180px;
+	padding-right: 0px;
+}
+
+.fixLabel {
+	width: 165px;
+	padding-top: 5px;
+}
+
+.fixButton {
+	width: 165px;
+	margin-top: -15px;
+}

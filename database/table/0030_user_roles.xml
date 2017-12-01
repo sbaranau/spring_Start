@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+  logicalFilePath="table/0030_user_roles.xml">
+
+    <changeSet id="0.0.1_0030" author="Ivan Shyrma">
+        <comment>Create table "user_roles"</comment>
+        <createTable tableName="user_roles" remarks="user roles" schemaName="${db.schema}">
+            <column name="user_id" type="bigint" remarks="user id">
+                <constraints nullable="false" />
+            </column>
+            <column name="role_id" type="bigint" remarks="role id">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user_roles" columnNames="user_id,role_id" constraintName="user_roles_pkey" schemaName="${db.schema}"/>
+        <addForeignKeyConstraint constraintName="user_roles_users_fkey" deleteCascade="true"
+            baseTableSchemaName="${db.schema}"
+            baseTableName="user_roles" baseColumnNames="user_id"
+            referencedTableName="users" referencedColumnNames="id" referencedTableSchemaName="${db.schema}"
+         />
+        <addForeignKeyConstraint constraintName="user_roles_roles_fkey" deleteCascade="true"
+            baseTableSchemaName="${db.schema}"
+            baseTableName="user_roles" baseColumnNames="role_id"
+            referencedTableName="roles" referencedColumnNames="id" referencedTableSchemaName="${db.schema}"
+         />
+        <rollback>
+            <dropTable tableName="user_roles" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

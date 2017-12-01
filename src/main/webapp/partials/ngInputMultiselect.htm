@@ -1,0 +1,11 @@
+<div class="form-group control-select full-width input-multi-select" ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <label class="control-label" ng-if="ngLabel!=null">{{ngLabel}}:<span ng-if="ngRequired" style="padding:10px;">*</span></label>
+    <div ng-dropdown-multiselect=""
+         options="ngItems"
+         extra-settings="{displayProp: 'name', idProp: 'id'}"
+         selected-model="ngModel"
+         disabled="ngDisabled"
+         placeholder="ngPlaceholder"
+    ></div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

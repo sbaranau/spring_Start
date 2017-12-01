@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="julia.dao.RoleDao">
+
+<!--     <select id="read" resultType="role" parameterType="long">
+        SELECT id, "name" FROM ${db.schema}.roles WHERE id = #{id}
+    </select>
+
+    <select id="findRoleByName" resultType="role" parameterType="string">
+        SELECT id, "name" FROM ${db.schema}.roles WHERE name = #{name}
+    </select>
+
+    <select id="findAll" resultType="role">
+        SELECT id, "name" FROM ${db.schema}.roles
+    </select>
+
+    <select id="findRolesByUserId" resultType="role" parameterType="long">
+        SELECT r.id, r."name" FROM main.roles r
+            LEFT JOIN ${db.schema}.group_roles rg ON r.id = rg.role_id
+            LEFT JOIN ${db.schema}.groups g ON rg.group_id = g.id
+            LEFT JOIN ${db.schema}.user_groups ug ON g.id = ug.group_id
+        WHERE ug.user_id = #{id}
+    </select>
+ -->
+    <resultMap id="role" type="role">
+        <id column="ID"               property="id" />
+        <result column="NAME"         property="name" />
+        <result column="name_ru"      property="nameRu" />
+        <result column="description"  property="description" />
+    </resultMap>
+
+    <insert id="create" parameterType="role" keyProperty="id">
+        INSERT INTO ${db.schema}.roles
+          (id, name, name_ru, description)
+        VALUES
+          (#{id}, #{name}, #{nameRu}, #{description})
+    </insert>
+
+    <select id="read" parameterType="long" resultMap="role">
+        SELECT
+          id, name, name_ru, description
+        FROM ${db.schema}.roles
+        WHERE
+          id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM ${db.schema}.roles
+        WHERE
+          id = #{id}
+    </delete>
+
+    <select id="findAll" resultMap="role">
+        SELECT
+          id, name, name_ru, description
+        FROM ${db.schema}.roles
+        ORDER BY id
+    </select>
+
+<!--     <select id="findRoleByName" resultType="role" parameterType="string">
+        SELECT id, "name" FROM ${db.schema}.roles WHERE name = #{name}
+    </select> -->
+
+      <select id="findGroupsRoles" parameterType="long" resultMap="role">
+        SELECT
+          r.id, r.name, r.name_ru, r.description
+        FROM ${db.schema}.group_roles gr
+          LEFT JOIN ${db.schema}.roles r ON gr.role_id = r.id
+        WHERE
+          gr.group_id = #{gid}
+    </select>
+
+    <insert id="setGroupsRoles" parameterType="map">
+        INSERT INTO ${db.schema}.group_roles (group_id, role_id)
+        VALUES (#{gid}, #{rid})
+    </insert>
+
+    <delete id="deleteGroupsRoles" parameterType="long">
+        DELETE FROM ${db.schema}.group_roles
+        WHERE group_id = #{gid}
+    </delete>
+
+    <select id="findAllRolesByUserId" resultMap="role">
+        SELECT
+          r.*
+        FROM ${db.schema}.roles r
+          JOIN ${db.schema}.group_roles gr ON gr.role_id = r.id
+          JOIN ${db.schema}.user_groups ugr ON ugr.group_id = gr.group_id
+        WHERE
+          ugr.user_id = #{userId}
+        GROUP BY r.id
+    </select>
+</mapper>

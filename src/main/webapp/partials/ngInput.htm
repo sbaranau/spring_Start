@@ -1,0 +1,13 @@
+<div class="form-group full-width" ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <label class="control-label" ng-if="ngLabel!=null">{{ngLabel}}:<span ng-if="ngRequired">*</span></label>
+    <input  ng-model="ngModel"
+            ng-change="validate()"
+            ng-disabled="ngDisabled"
+            ng-required="ngRequired"
+            placeholder="{{ngPlaceholder}}"
+            ng-maxlength="{{ngMaxlength}}"
+            type="{{ngType}}"
+            class="form-control"/>
+
+    <small class="help-block"  ng-if="valid == false">{{message}}</small>
+</div>

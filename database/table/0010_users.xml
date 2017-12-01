@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+  logicalFilePath="table/0010_users.xml">
+
+    <changeSet id="0.0.1_0010" author="Ivan Shyrma, Aleksandr Golovnyov">
+        <comment>Create table "users"</comment>
+        <createTable tableName="users" schemaName="${db.schema}">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_users" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(110)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="users_ukey"/>
+            </column>
+            <column name="password" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(64)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="users" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

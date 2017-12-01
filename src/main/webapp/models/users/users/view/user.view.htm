@@ -1,0 +1,310 @@
+<section>
+    <div>
+        <div class="row">
+            <div class="col-sm-offset-10 col-sm-2">
+                <button class="btn btn-primary pull-right full-width" ng-click="vm.getReport()"
+                        translate="training.print"
+                ></button>
+            </div>
+        </div>
+        <div class="box box-inner box-content">
+            <legend translate="users.viewUser.general.title"></legend>
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 col-md-2" style="text-align: center; padding-bottom: 20px;">
+                    <img ng-if="vm.userData.user.photo != null" ng-src="{{baseUrl}}/resources.html?id={{vm.userData.user.photo}}" width="120px" height="120px" align="top" />
+                    <img ng-if="vm.userData.user.photo == null" ng-src="img/no_photo.png" width="120px" height="120px" align="top" />
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-4">
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th><span translate="users.viewUser.general.login"></span>:</th>
+                                <td>{{vm.userData.user.login}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.surname"></span>:</th>
+                                <td>{{vm.userData.user.surname}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.name"></span>:</th>
+                                <td>{{vm.userData.user.name}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.middleName"></span>:</th>
+                                <td>{{vm.userData.user.middleName}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.phone"></span>:</th>
+                                <td>{{vm.userData.user.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.email"></span>:</th>
+                                <td>{{vm.userData.user.email}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.birth"></span>:</th>
+                                <td>
+                                    {{vm.userData.user.dateBirth | date : 'dd.MM.yyyy'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.tests"></span>:</th>
+                                <td>{{vm.amountTests}}</td>
+                            </tr>
+                            <tr>
+                                <th><span translate="users.viewUser.general.status"></span>:</th>
+                                <td>{{vm.userData.userStatusName}}</td>
+                            </tr>
+                            <tr ng-if="vm.userData.user.chief">
+                                <th><span translate="users.viewUser.general.chief"></span>:</th>
+                                <td><span translate="users.viewUser.general.yes"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <div class="box box-inner box-content">
+                    <legend translate="users.viewUser.roles"></legend>
+                    <div class="table-responsive">
+                        <ul>
+                            <li ng-repeat="group in vm.userData.groups">
+                                <span>{{group.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <div class="box box-inner box-content">
+                    <legend translate="users.viewUser.fixedEquipment"></legend>
+                    <div ng-show="vm.userData.userSensors">
+                        <ul>
+                            <li ng-repeat="userSensor in vm.userData.userSensors">
+                                <span>{{userSensor.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div ng-show="!vm.userData.userSensors">
+                        <span translate="users.viewUser.emptyData"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <div class="box box-inner box-content">
+                    <legend translate="users.viewUser.notifyType.title"></legend>
+                    <div ng-show="vm.isNotificationExists()">
+                        <ul>
+                            <li ng-show="vm.isThresholdsExcessExist()">
+                                <span translate="users.viewUser.notifyType.thresholdsExcess"></span>
+                            </li>
+                            <li ng-show="vm.isNonresponseSensorsExist()">
+                                <span translate="users.viewUser.notifyType.nonresponseSensors"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div ng-show="!vm.isNotificationExists()">
+                        <span translate="users.viewUser.emptyData"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-inner box-content">
+        <legend translate="users.viewUser.serviceInformation.title"></legend>
+        <div class="table-responsive">
+            <div ng-show="!vm.isEmpty(vm.userData.serviceInformation)">
+                <table>
+                    <thead>
+                        <tr>
+                            <th translate="users.viewUser.serviceInformation.receiptDate"></th>
+                            <th translate="users.viewUser.serviceInformation.department"></th>
+                            <th translate="users.viewUser.serviceInformation.postAndProfession"></th>
+                            <th translate="users.viewUser.serviceInformation.order"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="serviceInfo in vm.userData.serviceInformation">
+                            <td>{{serviceInfo.dateReceipt | date : 'dd.MM.yyyy'}}</td>
+                            <td>{{serviceInfo.departmentName}}</td>
+                            <td>{{serviceInfo.postName}}</td>
+                            <td>{{serviceInfo.numberOrder}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="vm.isEmpty(vm.userData.serviceInformation)">
+                <span translate="users.viewUser.emptyData"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-inner box-content">
+        <legend translate="users.viewUser.category.title"></legend>
+        <div class="table-responsive">
+            <div ng-show="!vm.isEmpty(vm.userCategories)">
+                <table>
+                    <thead>
+                    <tr>
+                        <th translate="users.viewUser.category.assignmentDate"></th>
+                        <th translate="users.viewUser.category.number"></th>
+                        <th translate="users.viewUser.category.category"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="category in vm.userCategories">
+                        <td>{{category.dateAssignment | date : 'dd.MM.yyyy'}}</td>
+                        <td>{{category.numberOrder}}</td>
+                        <td>{{category.categoryName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="vm.isEmpty(vm.userCategories)">
+                <span translate="users.viewUser.emptyData"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-inner box-content">
+        <legend translate="users.viewUser.education.title"></legend>
+        <div class="table-responsive">
+            <div ng-show="!vm.isEmpty(vm.userData.educations)">
+                <table>
+                    <thead>
+                    <tr>
+                        <th translate="users.viewUser.education.institution"></th>
+                        <th translate="users.viewUser.education.qualification"></th>
+                        <th translate="users.viewUser.education.specialty"></th>
+                        <th translate="users.viewUser.education.graduationDate"></th>
+                        <th translate="users.viewUser.education.type"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="education in vm.userData.educations">
+                        <td>{{education.institution}}</td>
+                        <td>{{education.faculty}}</td>
+                        <td>{{education.specialty}}</td>
+                        <td>{{education.yearGraduation | date:'dd.MM.yyyy'}}</td>
+                        <td>{{education.type}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="vm.isEmpty(vm.userData.educations)">
+                <span translate="users.viewUser.emptyData"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-inner box-content">
+        <legend translate="users.viewUser.certification.title"></legend>
+        <div class="table-responsive">
+            <div ng-show="!vm.isEmpty(vm.userData.certifications)">
+                <table>
+                    <thead>
+                    <tr>
+                        <th translate="users.viewUser.certification.name"></th>
+                        <th translate="users.viewUser.certification.date"></th>
+                        <th translate="users.viewUser.certification.result"></th>
+                        <th translate="users.viewUser.certification.number"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="certification in vm.userData.certifications">
+                        <td>{{certification.name}}</td>
+                        <td>{{certification.dateCertification | date : 'dd.MM.yyyy'}}</td>
+                        <td>{{certification.result}}</td>
+                        <td>{{certification.numberOrder}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="vm.isEmpty(vm.userData.certifications)">
+                <span translate="users.viewUser.emptyData"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-inner box-content">
+        <legend translate="users.viewUser.jobsType.title"></legend>
+            <div class="table-responsive">
+            <div ng-show="!vm.isEmpty(vm.userData.userJobsView)">
+                <table>
+                    <thead>
+                    <tr>
+                        <th translate="users.viewUser.jobsType.date"></th>
+                        <th translate="users.viewUser.jobsType.type"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="job in vm.userData.userJobsView">
+                        <td>{{job.date | date:'dd.MM.yyyy'}}</td>
+                        <td>{{job.jobsName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="vm.isEmpty(vm.userData.userJobsView)">
+                <span translate="users.viewUser.emptyData"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-inner box-content">
+        <legend translate="users.viewUser.training.title"></legend>
+        <div style="margin-bottom:10px;" ng-if="vm.userData.teacher">
+            <span style="font-weight:700;" translate="users.viewUser.training.approved.title"></span>,
+            <span style="font-weight:700;" translate="users.viewUser.training.approved.date"></span>: {{vm.userData.teacher.approveDate | date : 'dd.MM.yyyy'}},
+            <span style="font-weight:700;" translate="users.viewUser.training.approved.position"></span>: {{vm.userData.teacher.post}},
+            <span style="font-weight:700;" translate="users.viewUser.training.approved.department"></span>: {{vm.userData.teacher.department}}
+        </div>
+        <div class="table-responsive">
+            <div ng-show="!vm.isEmpty(vm.userData.trainings)">
+                <table>
+                    <thead>
+                    <tr>
+                        <th translate="users.viewUser.training.date"></th>
+                        <th translate="users.viewUser.training.topic"></th>
+                        <th translate="users.viewUser.training.type"></th>
+                        <th translate="users.viewUser.training.result"></th>
+                       <!-- <th translate="users.viewUser.training.status"></th>-->
+                        <th translate="users.viewUser.training.org"></th>
+                        <th translate="users.viewUser.training.document"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="training in vm.userData.trainings">
+                        <td>{{training.date | date : 'dd.MM.yyyy'}}</td>
+                        <td>{{training.topic}}</td>
+                        <td>{{training.typeTraining.name}}</td>
+                        <td ng-if="training.trainingResult" translate="users.viewUser.training.done"></td>
+                        <td ng-if="!training.trainingResult" translate="users.viewUser.training.fail"></td>
+                        <td>{{training.statusEmployment.name}}</td>
+                        <td>{{training.organization}}</td>
+                        <td>
+                            <a href="{{baseUrl}}/resources.html?id={{training.trainingFinalDataId}}" download>
+                                {{training.filename}}
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-show="vm.isEmpty(vm.userData.trainings)">
+                <span translate="users.viewUser.emptyData"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-9 col-sm-3">
+            <button ng-click="vm.close()" class="btn btn-primary pull-right" translate="users.viewUser.close"></button>
+        </div>
+    </div>
+</section>

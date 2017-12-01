@@ -1,0 +1,13 @@
+<div class="form-group full-width" ng-class="{'has-error' : vm.valid == false, 'has-success': vm.valid == true}">
+    <label class="control-label" translate="{{$ctrl.labelWithPlaceholder}}"></label>
+    <input type="text"
+           placeholder="{{$ctrl.labelWithPlaceholder}}"
+           class="form-control"
+           ng-model="vm.supply.material"
+           uib-typeahead="state as state.name for state in $ctrl.modelList | filter:{name:$viewValue}"
+           typeahead-template-url="partials/dropdownSearch/dropdownSearchTemp.htm"
+           typeahead-show-hint="true"
+           typeahead-min-length="0"
+    />
+    <small class="help-block"  ng-if="vm.valid == false" translate="modal.stockroom.supplyMaterials.cardGoods.errorMessage"></small>
+</div>

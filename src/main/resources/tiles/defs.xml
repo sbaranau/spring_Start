@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+    "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- Base definitions -->
+
+	<definition name=".base-template" template="/WEB-INF/jsp/layout/template.jsp">
+		<!-- default value to avoid null exception -->
+		<put-attribute name="header_menu_cursor" value=""
+			cascade="true" />
+	</definition>
+
+
+	<definition name=".base-maintenance" extends=".base-template">
+		<put-attribute name="header_menu_cursor" value="maintenance"
+			cascade="true" />
+	</definition>
+
+	<!--login -->
+
+	<definition name=".login" template="/WEB-INF/jsp/login.jsp" />
+
+	<!-- Error -->
+
+	<definition name=".error" extends=".base-template">
+		<put-attribute name="content" value="/WEB-INF/jsp/error.jsp" />
+	</definition>
+
+	<definition name=".error.noOKKHead" extends=".base-template">
+		<put-attribute name="content" value="/WEB-INF/jsp/noOKKHead.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,22 @@
+<div class="form-group full-width control-checkbox" ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <div class="control-label" ng-click="toggle()">
+        <div>
+            <span class="checkbox-input">
+                <span ng-if="ngModel == true"
+                      ng-required="ngRequired"
+                      ng-disabled="ngDisabled"
+                      ng-checked="ngChecked"
+                      class="glyphicon glyphicon-plus checkbox-input-checked"
+                ></span>
+                <span ng-if="!ngModel"
+                      ng-required="ngRequired"
+                      ng-disabled="ngDisabled"
+                      ng-checked="ngChecked"
+                      class="glyphicon glyphicon-plus"
+                ></span>
+            </span>
+        </div>
+        <div ng-if="ngLabel != null">{{ngLabel}}</div>
+    </div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

@@ -1,0 +1,12 @@
+<div class="form-group full-width"  ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <label class="control-label" ng-if="ngLabel!=null">{{ngLabel}}</label>
+    <div class="btn btn-info form-control control-file">
+        <div ng-if="modelName == null" class="control-filename">
+            Выбрать файл
+        </div>
+        <div ng-if="modelName != null" class="control-filename">{{modelName}}</div>
+        <input type="file" title="Загрузите файл" ng-disabled="ngDisabled" ngf-select ng-model="ngModel">
+        <div class="glyphicon glyphicon-file"></div>
+    </div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

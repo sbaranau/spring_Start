@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="data/1070_settings.xml">
+
+    <changeSet id="0.0.1_1070" author="Aleksandr Golovnyov">
+        <comment>Fills table "settings"</comment>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">temperatureSensor.pollingRate</column>
+            <column name="value">1</column>
+            <column name="comment">in minutes</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">temperatureSensor.threshold.measurementsAmount</column>
+            <column name="value">3</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">mail.username</column>
+            <column name="value">test@tehnologia.by</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">mail.password</column>
+            <column name="value">testTR</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">mail.smtp.host</column>
+            <column name="value">portal</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">mail.smtp.port</column>
+            <column name="value">25</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">mail.smtp.starttls.enable</column>
+            <column name="value">false</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">mail.smtp.timeout</column>
+            <column name="value">3</column>
+            <column name="comment">in seconds</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">gsmDevice.comPort</column>
+            <column name="value">COM5</column>
+        </insert>
+        <insert tableName="settings" schemaName="${db.schema}">
+            <column name="key">notify.delay</column>
+            <column name="value">3</column>
+        </insert>
+        <rollback>
+            <delete tableName="settings" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

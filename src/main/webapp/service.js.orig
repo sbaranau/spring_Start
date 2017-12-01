@@ -1,0 +1,803 @@
+angular.module('app.services', [ 'ngResource' ])
+    .factory('TrainingsService', TrainingsService)
+    .factory('TrainingTeachersService', TrainingTeachersService)
+    .factory('TrainingReportsService', TrainingReportsService)
+    .factory('CategoryService', CategoryService)
+    .factory('UserService', UserService)
+    .factory('SupplyMaterialsService', SupplyMaterialsService)
+    .factory('ElectricityConsumptionService', ElectricityConsumptionService)
+    .factory('RoomsService', RoomsService)
+    .factory('UtilService', UtilService)
+    .factory('JournalSampleService', JournalSampleService)
+    .factory('EquipmentService', EquipmentService)
+    .factory('EquipmentRepairsService', EquipmentRepairsService)
+    .factory('FilteredListService', FilteredListService)
+    .factory('ControlOptionsService', ControlOptionsService)
+    .factory('ControlledParametersService', ControlledParametersService)
+    .factory('MeasuresService', MeasuresService)
+    .factory('CardGoodsService', CardGoodsService)
+    .factory('MaintenanceService', MaintenanceService)
+    .factory('JournalNoticeService', JournalNoticeService)
+    .factory('SamplingActService', SamplingActService)
+    .factory('CertificationRefService', CertificationRefService)
+    .factory('DepartmentsRefService', DepartmentsRefService)
+    .factory('PostRefService', PostRefService)
+    .factory('MetrologicalControlService', MetrologicalControlService)
+    .factory('MainService', MainService)
+    .factory('GroupRefService', GroupRefService)
+    .factory('ReasonRefService', ReasonRefService)
+    .factory('PlanMaintenanceRepairService', PlanMaintenanceRepairService)
+    .factory('TaskService', TaskService)
+    .factory('EquipmentRigService', EquipmentRigService)
+    .factory('ProfileDocumentService', ProfileDocumentService)
+    .factory('ProfileTrainingService', ProfileTrainingService)
+    .factory('ProfileUserService', ProfileUserService)
+    .factory('SettingsService', SettingsService)
+    .factory('ProfileEquipmentService', ProfileEquipmentService)
+    .factory('EquipmentValidationService', EquipmentValidationService)
+    .factory('ReportTemplatesService', ReportTemplatesService)
+    .factory('ProjectsService', ProjectsService);
+
+function UserService($http, $window) {
+    return {
+        user: null,
+        list : function(params) {
+            return $http.post('settings/users/list.json', params);
+        },
+        add : function() {
+            return $http.post('settings/users/add.json');
+        },
+        edit : function(params) {
+            return $http.post('settings/users/' + params + '/edit.json');
+        },
+        view : function(params) {
+            return $http.get('settings/users/' + params + '/view.json');
+        },
+        getPosts : function (params){
+            return $http.post('settings/users/department_posts.json', params);
+        },
+        getUsersByPostIdAndDate: function (params) {
+            return $http.get('settings/users/post_users.html?postId=' + params.postId + '&date=' + params.date);
+        },
+        getPhoto : function(params){
+            return $http.post('resources.html', params);
+        },
+        getBytes : function(params){
+            return $http.post('resources_bytes.html', params);
+        },
+        getResponse : function(params){
+            return $http.get('resources.html?id=' + params);
+        },
+        fire : function(params){
+            return $http.post('settings/users/' + params.userId + '/fire.json?fired=' + params.fired);
+        },
+        resetPassword: function (userId) {
+            return $http.post('settings/users/' + userId + '/reset.json');
+        },
+        changeStatus: function (userId, statusId) {
+            return $http.post('settings/users/' + userId + '/change_status.json', statusId);
+        },
+        getReport: function (userId) {
+            return $window.open("settings/users/report.json?userId=" + userId, '_blank');
+        }
+    }
+}
+
+function SupplyMaterialsService($resource, $http) {
+    return {
+        list : function(params) {
+            return $http.post('stockroom/supply_materials/list.json', params);
+        },
+        getAddInfo : function (params){
+            return $http.post('stockroom/get_save_supply_material.json', params);
+        },
+        getEditInfo : function (params){
+            return $http.post('stockroom/get_edit_supply_material.json', params);
+        },
+        getTemplate: function (params){
+            return $http.get('stockroom/supply_material_template.json', params);
+        },
+        saveSupplyMaterial : function (params){
+            return $http.post('stockroom/save_supply_material.json', params);
+        },
+        searchByCategoryId : function (params){
+            return $http.post('stockroom/search_card_goods_by_category_id.json', params);
+        },
+        selectCardGoods : function (params){
+            return $http.post('stockroom/select_card_goods.json', params);
+        },
+        selectProducer : function (params){
+            return $http.post('stockroom/get_producer.json', params);
+        }
+    }
+}
+
+function ElectricityConsumptionService($resource, $http) {
+    return {
+        getElectricityReport : function(params){
+            return $http.post('electricity.json', params);
+        }
+    }
+}
+
+function RoomsService($resource, $http) {
+    return {
+        getAddData : function(params){
+            return $http.post('rooms/add_room.json', params);
+        },
+        getEditData : function(params){
+            return $http.post('rooms/edit_room.json?id=', params);
+        },
+        saveRoom : function(params){
+            return $http.post('rooms/save_room.json', params);
+        }
+    }
+}
+
+function UtilService($resource, $http){
+    return {
+        post : function(url, params){
+            return $http.post(url, params);
+        }
+    }
+}
+
+function JournalSampleService($resource, $http, $filter) {
+    return {
+        getJournalSamples : function(params){
+            return $http.post('journalSample.json', params);
+        },
+        appointPerformer : function(params){
+            return $http.post ('journal/sampleRegistration/appointPerformer.json', params);
+        },
+        getReport : function(params){
+            var start = $filter('date')(params.startTime, "dd.MM.yyyy");
+            var end = $filter('date')(params.endTime, "dd.MM.yyyy");
+            location.href =  "journalSamples/report.html?startTime=" + start + "&endTime=" + end;
+            return null;
+        }
+    }
+}
+
+function EquipmentService($http){
+    return {
+        equipmentId: null,
+        equipmentUsage: null,
+        typeId: null,
+        controlledParameters: function () {
+            return {
+                id: null,
+                name: null,
+                intervalCheck: null,
+                maxValue: null,
+                minValue: null,
+                notes: null
+            }
+        },
+        metrologicalControl: function () {
+            return {
+                id: null,
+                beginDate: null,
+                endDate: null,
+                validityPeriod: null,
+                dataId: null,
+                metrologicalControlTypeId: null,
+                metrologicalControlTypeName: null,
+                equipmentId: null,
+                dataName: null,
+                className: null,
+                scaleValue: null,
+                method: null,
+                number:null,
+                organizationConductedInspectionId: null,
+                responsiblePersonId: null,
+                measuringRange: null,
+                responsiblePersonName: null,
+                methodFileId: null,
+                methodFileName: null
+            }
+        },
+        eqParams: function () {
+            return [this.controlledParameters()]
+        },
+        list: function (param){
+            return $http.get('equipments/list.json?search=' + param);
+        },
+        getEquipmentInfo : function (id){
+            return $http.get('equipments/' + id + '/view.json');
+        },
+        getEquipmentData: function(id) {
+            return $http.get('equipments/' + id + '/edit.json');
+        },
+        saveEquipment : function(params){
+            return $http.post('equipments/save.json', params, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        },
+        remove: function(id) {
+            return $http.post('equipments/' + id + '/delete.json');
+        },
+        saveSparePart : function(params){
+            var formData = new FormData();
+            formData.append('multipartFile', params.file);
+            formData.append('sparePart', angular.toJson(params.form));
+
+            return $http.post('save_spare_part.json', formData, {
+                transformRequest : angular.identity,
+                headers : {'Content-Type' : undefined}
+            })
+        },
+        saveEquipmentUsage : function(params){
+            return $http.post('equipments/usages/save_usage.json', params, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        },
+        getEquipmentUsage : function(id){
+            return $http.get('equipments/usages/' + id + '/edit.json');
+        },
+        saveManufacturer : function(params){
+            return $http.post('saveManufacturer.json', params);
+        }
+    }
+}
+
+function EquipmentRepairsService($http, $window, $httpParamSerializer) {
+    return {
+        repair: null,
+        getRepairs : function(text){
+            return $http.get('equipment_repairs.json?search=' + text);
+        },
+        get: function(repairId){
+            return $http.get(repairId + '/repair.json');
+        },
+        saveEquipmentRepairs : function(params) {
+            return $http.post('equipment_info_save_er.json', params);
+        },
+        remove: function (id) {
+            return $http.post('remove_er.json?id=' + id);
+        },
+        getRepairJournalReport: function(params) {
+            $window.open('repair/reports/repair_journal.html?' + $httpParamSerializer(params), '_blank');
+        }
+    };
+}
+
+function EquipmentRigService($http) {
+    return {
+        equipmentRig: null,
+        getEquipmentRig: function(rigId){
+            return $http.get(rigId + '/rig.json');
+        },
+        saveEquipmentRig : function(params) {
+            return $http.post('equipment_info_save_rig.json', params);
+        },
+        removeEquipmentRig: function (rigId) {
+            return $http.post('remove_rig.json?rigId=' + rigId);
+        }
+    };
+}
+
+function EquipmentValidationService($http) {
+    return {
+        equipmentValidation: null,
+        getEquipmentValidation: function(validationId){
+            return $http.get('equipments/validations/' + validationId + '/edit.json');
+        },
+        saveEquipmentValidation : function(params) {
+            return $http.post('equipments/validations/save_validation.json', params, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        },
+        removeEquipmentValidation: function (validationId) {
+            return $http.get('equipments/validations/' + validationId + '/remove.json');
+        }
+    };
+}
+
+function FilteredListService() {
+    return {
+        searched : function (valLists, toSearch, modelName) {
+            return _.filter(valLists,
+                function (item) {
+                    if(angular.isDate(toSearch)){
+                        var itemDate = new Date(item[modelName]).toDateString()
+                        var search = new Date(toSearch).toDateString()
+                        return itemDate == search;
+                    }
+                    if(angular.isString(item[modelName])){
+                        return (item[modelName].toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+                    } else {
+                        return (item[modelName].toString().toLowerCase().indexOf(toSearch.toString().toLowerCase()) > -1) ? true : false
+                    }
+                });
+        },
+        paged : function (valLists, pageSize) {
+            var retVal = [];
+            for (var i = 0; i < valLists.length; i++) {
+                if (i % pageSize === 0) {
+                    retVal[Math.floor(i / pageSize)] = [valLists[i]];
+                } else {
+                    retVal[Math.floor(i / pageSize)].push(valLists[i]);
+                }
+            }
+            return retVal;
+        }
+    }
+}
+
+function ControlOptionsService($http, $window, $httpParamSerializer) {
+    return {
+        getControlOptions : function(params){
+            return $http.post('equipments/get_all_control_options.json', params);
+        },
+        searchMetrologicalControl: function (params){
+            return $http.get('equipments/search_metrological_control.json', {'params' : params});
+        },
+        getMetrologicalControlJournalReport: function(params) {
+            $window.open('equipments/reports/metrological_control_journal.html?' + $httpParamSerializer(params), '_blank');
+        }
+    };
+}
+
+function ControlledParametersService($resource, $http, $filter){
+    return {
+        getEquipmentControlledParameters : function(params){
+            return $http.post('equipments/get_equipment_controlled_parameters.json?equipmentId=' + params);
+        },
+        saveEquipmentControlledParameters : function(params){
+            return $http.post('equipments/save_equipment_controlled_parameters.json', params);
+        }
+    }
+}
+
+function MeasuresService($resource, $http, $filter){
+    return {
+        getAll : function(params){
+            return $http.post('references/get_all_measures.json', params);
+        },
+        saveMeasure : function(params){
+            return $http.post('references/save_measures.json', params);
+        },
+        editMeasure : function(params){
+            return $http.post('references/edit_measures.json', params);
+        },
+        deleteMeasure : function(params){
+            return $http.post('references/delete_measures.json', params);
+        }
+    }
+}
+
+function CardGoodsService($resource, $http, $filter){
+    return {
+        getAll : function(params){
+            return $http.post('stockroom/get_all_card_goods.json', params);
+        },
+        getAllForSave : function(params){
+            return $http.post('stockroom/get_all_for_save_card_goods.json', params);
+        },
+        saveCardGoods : function(params){
+            return $http.post('stockroom/save_card_goods.json', params);
+        },
+        editCardGoods : function(params){
+            return $http.post('stockroom/edit_card_goods.json', params);
+        },
+        deleteCardGoods : function(params){
+            return $http.post('stockroom/delete_card_goods.json', params);
+        },
+        isPartitive : function(params){
+            return $http.post('stockroom/is_partitive_measure.json', params);
+        },
+        saveCategory : function(params){
+            return $http.post('stockroom/save_category.json', params);
+        }
+    }
+}
+
+function MaintenanceService($http, $window, $httpParamSerializer){
+    return {
+        maintenanceId: null,
+        maintenance: null,
+        getAll : function(){
+            return $http.get('maintenance/list.json');
+        },
+        get : function(maintenanceId){
+            return $http.get(maintenanceId + '/maintenance.json');
+        },
+        search: function(text){
+            return $http.get('maintenance/search.json?search=' + text);
+        },
+        saveEquipmentMaintenance : function(params){
+            return $http.post('equipment_info_save_em.json', params);
+        },
+        remove : function(id){
+            return $http.post('remove_em.json?id=' + id);
+        },
+        getPostsForDepartment : function(params) {
+            return $http.get('get_posts_for_department.html', {'params' : params});
+        },
+        getUsersForDepartmentAndPost : function(params) {
+            return $http.get('get_users_for_department_and_post.html', {'params' : params});
+        },
+        getMaintenanceJournalReport: function(params) {
+            $window.open('maintenance/reports/maintenance_journal.html?' + $httpParamSerializer(params), '_blank');
+        }
+    };
+}
+
+function PlanMaintenanceRepairService($http){
+    return {
+        getAll : function(searchText){
+            return $http.get('get_plan_maintenance_repair.json?search=' + searchText);
+        }
+    }
+}
+
+function JournalNoticeService($resource, $http, $filter){
+    return {
+        getAll : function(params){
+            return $http.post('get_all_notice.json', params);
+        }
+    }
+}
+
+function SamplingActService($resource, $http, $filter){
+    return {
+        getData : function(params){
+            return $http.get('samplingAct.json?smId=' + params);
+        },
+        save : function(params){
+            return $http.post('save_sampling_act.json', params);
+        }
+    }
+}
+
+function TrainingsService($http, $window, $filter, $httpParamSerializer) {
+    return {
+        trainingId: null,
+        list : function(search) {
+            return $http.get('training/list.json?search=' + search);
+        },
+        delete : function(trainingId){
+            return $http.post('training/' + trainingId + '/delete.json');
+        },
+        edit : function(trainingId){
+            return $http.get('training/' + trainingId + '/edit.json');
+        },
+        getTeachers: function () {
+            return $http.get('training/teachers.json');
+        },
+        save: function (params) {
+            return $http.post('training/save.json', params, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        },
+        view: function (trainingId) {
+            return $http.get('training/' + trainingId + '/view.json');
+        },
+        saveFinalTraining: function (params) {
+            return $http.post('training/save_final_training.json', params);
+        },
+        getUsers: function (params) {
+            return $http.post('training/users.json', params);
+        },
+        uploadFile: function (params) {
+            return $http.post('training/upload.json', params, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        },
+        getReport: function (params) {
+            params.startDate = $filter('date')(params.startDate, "dd.MM.yyyy");
+            params.endDate = $filter('date')(params.endDate, "dd.MM.yyyy");
+            return $window.open('training/report.json?' + $httpParamSerializer(params), '_blank');
+        },
+        getFileName: function (dataId) {
+            return $http.get('resources/' + dataId + '/name.json');
+        }
+    }
+}
+
+function TrainingReportsService($http, $window, $filter) {
+    return {
+        getReportData: function (params) {
+            return $http.post('training/reports/training_report_data.json', params);
+        },
+        getReport: function (params) {
+            var start = $filter('date')(params.startDate, "dd.MM.yyyy");
+            var end = $filter('date')(params.endDate, "dd.MM.yyyy");
+            var departmentId = params.departmentId;
+            return $window.open(
+                'training/reports/reportTraining.json?' +
+                'startDate=' + start + '&' +
+                'endDate=' + end + '&' +
+                'departmentId=' + departmentId,
+                '_blank'
+            );
+        }
+    };
+}
+
+function TrainingTeachersService($http, $window) {
+    return {
+        teacherId:null,
+        list : function(searchText) {
+            return $http.get('training/teachers/list.json', {params : {search:searchText}});
+        },
+        add : function(params) {
+            return $http.post('training/teachers/add.json?userId=' + params);
+        },
+        delete : function(params) {
+            return $http.post('training/teachers/delete.json?teacherId=' + params);
+        },
+        approve : function(params) {
+            return $http.post('training/teachers/approve.json?teacherId=' + params);
+        },
+        getReport: function (search) {
+            return $window.open('training/teachers/report.json?search=' + search , '_blank');
+        }
+    }
+}
+
+function CertificationRefService($http, $resource) {
+    return {
+        certification:null,
+        list : function(params) {
+            return $http.get('references/certification/list.json', params);
+        },
+        add : function(params) {
+            return $http.post('references/certification/add.json', params);
+        },
+        delete : function(params) {
+            return $http.post('references/certification/delete.json?certificationId=' + params);
+        },
+        edit : function(params) {
+            return $http.post('references/certification/edit.json', params);
+        }
+    }
+}
+
+function DepartmentsRefService($http) {
+    return {
+        departmentId: null,
+        parentId: null,
+        list : function(params) {
+            return $http.get('references/department/list.json', params);
+        },
+        add : function() {
+            return $http.post('references/department/add.json');
+        },
+        delete : function(params) {
+            return $http.post('references/department/delete.json?departmentId=' + params);
+        },
+        edit : function(params) {
+            return $http.post('references/department/edit.json', params);
+        },
+        save: function(params){
+            return $http.post('references/department/save.json', params);
+        }
+    }
+}
+
+function PostRefService($http) {
+    return {
+        postId: null,
+        list : function(params) {
+            return $http.get('references/post/list.json', params);
+        },
+        delete : function(params) {
+            return $http.post('references/post/delete.json?postId=' + params);
+        },
+        edit : function(params) {
+            return $http.post('references/post/edit.json', params);
+        },
+        save: function(params){
+            return $http.post('references/post/save.json', params);
+        }
+    }
+}
+
+function ReasonRefService($http) {
+    return {
+        reasonId: null,
+        list : function(params) {
+            return $http.get('references/reason/list.json', params);
+        },
+        delete : function(params) {
+            return $http.post('references/reason/delete.json?reasonId=' + params);
+        },
+        edit : function(params) {
+            return $http.post('references/reason/edit.json', params);
+        },
+        save: function(params){
+            return $http.post('references/reason/save.json', params);
+        }
+    }
+}
+
+function CategoryService($resource){
+	return{
+        category: null,
+		list : function() {
+        	return $resource('categories.json').query();
+        },
+        get: function(params){
+        	return $resource(':id/category.json', {id:'@id'}).get({id:params});
+        },
+        getByName: function(params){
+        	return $resource('category.json',{name: '@name'}).get({name: params});
+        },
+        save: function(params){
+        	return $resource('category/save.json').save({id:params.id,name:params.name});
+        },
+        delete: function(params){
+        	return $resource('person_category/delete_person_category.html',{personCategoryId: '@personCategoryId'})
+                .get({personCategoryId:params});
+        }
+
+    }
+}
+
+/**
+ * Сервис получения основных данных,
+ * которые должны быть доступны всегда,
+ * после авторизации пользователя
+ * @param $http
+ * @returns {{getHeaderData: promise}}
+ */
+function MainService($http){
+	return{
+		getHeaderData : function() {
+            return $http.get('main/header/header.json');
+        }
+    }
+}
+
+function GroupRefService($http) {
+    return {
+        group: null,
+        list: function() {
+            return $http.get('references/group/list.json');
+        },
+        get: function(id) {
+            return $http.get('references/group/' + id + '/group.json');
+        },
+        getRolesList: function() {
+            return $http.get('references/group/roles.json');
+        },
+        save: function(params) {
+            return $http.post('references/group/save.json', params);
+        },
+        delete: function(id) {
+            return $http.post('references/group/' + id + '/delete.json');
+        }
+    }
+}
+
+/**
+        documentCategoryList: null,
+                    service.documentCategoryList =            response.data.documentCategoryList;
+ * Сервис метрологического контроля
+ */
+function MetrologicalControlService($http) {
+    return {
+        metrologicalControl: null,
+        metrologicalControlDataName: null,
+        save: function (mc) {
+            var document = mc.multipartFile ? mc.multipartFile : null;
+            mc.multipartFile = null;
+            mc.validityPeriod = +mc.validityPeriod.replace(' мес.', '');
+
+            var request = new FormData();
+            request.append('document', document);
+            request.append('metrologicalControl', angular.toJson(mc));
+            return $http.post('equipment_info_save_mc.json', request, {
+                transformRequest : angular.identity,
+                headers : {'Content-Type': undefined}
+            });
+        },
+        remove: function (id) {
+            return $http.post('remove_mc.json?id=' + id);
+        }
+    }
+}
+
+function TaskService($http) {
+    return {
+        list: function (){
+            return $http.get('profile/task/list.json');
+        }
+    }
+}
+
+function ProfileDocumentService($http) {
+    return {
+        list: function (){
+            return $http.get('profile/documents/list.json');
+        },
+        search: function(text){
+            return $http.get('profile/documents/search.json?search=' + text);
+        }
+    }
+}
+
+function ProfileTrainingService($http) {
+    return {
+        list: function (){
+            return $http.get('profile/trainings/list.json');
+        }
+    }
+}
+
+function ProfileUserService($http) {
+    return {
+        list: function (){
+            return $http.get('profile/users/list.json');
+        }
+    }
+}
+
+function ProfileEquipmentService($http) {
+    return {
+        list: function (){
+            return $http.get('profile/equipments/list.json');
+        },
+        search: function (text) {
+            return $http.get('profile/equipments/list.json?search=' + text);
+        }
+    }
+}
+
+/**
+ * Сервис настроек
+ */
+function SettingsService($http) {
+    var service =  {
+        getCommonSettings: function () {
+            return $http.get('settings/common/list.json');
+        },
+        saveCommonSettings: function (params) {
+            return $http.post('settings/common/save.json', params);
+        },
+        isAuth: function () {
+            return $http.get('settings/is_auth.json');
+        }
+    };
+
+    return service;
+}
+
+function ReportTemplatesService($http) {
+    var service = {
+        reportTemplate: null,
+        getReportTemplatesByModules: function() {
+            return $http.get('settings/report_templates/report_templates_by_modules.json');
+        },
+        saveReportTemplate : function(params) {
+            return $http.post('settings/report_templates/save_report_template.json', params, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        },
+        removeReportTemplate: function (reportTemplateId) {
+            return $http.post('settings/report_templates/' + reportTemplateId + '/remove.json');
+        }
+    };
+    return service;
+}
+
+/**
+ * Сервис управления проектами
+ */
+function ProjectsService($http) {
+    var service = {
+        list: function (searchText) {
+            return $http.get('projects/list.json?search=' + searchText);
+        }
+    };
+
+    return service;
+}

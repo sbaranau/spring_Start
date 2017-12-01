@@ -1,0 +1,563 @@
+.custom-box{
+    margin:10px;
+}
+.yellowBG {
+    background-color: #ffff00 !important;
+}
+.redBG {
+    background-color: #ff0000 !important;
+    
+}
+.greenBG {
+    background-color: green !important;
+}
+#trainingFinalTable thead th, #trainingFinalTable td {
+    vertical-align: middle;
+}
+.user-active{
+    color:green;
+}
+.user-leave{
+    color:orange;
+}
+.user-fired{
+    color:red;
+}
+.mg-bottom-10{
+    margin-bottom:10px !important;
+}
+.mg-10{
+    margin:10px;
+}
+.mg-right-10{
+    margin-right:10px !important;
+}
+.pd-10{
+    padding:10px;
+}
+.dont-show{
+    display:none;
+}
+.shown{
+    display:block !important;
+}
+
+.full-width{
+    width:100%;
+}
+.control-date{
+    z-index:2;
+    display: flex !important;
+    justify-content: space-between;
+    align-content: center;
+    background-color: #fff;
+    opacity: 1;
+    cursor: default;
+}
+.control-date input{
+    border:none;
+    width:inherit;
+}
+.control-file{
+    position:relative;
+    display: flex !important;
+    justify-content: space-between;
+    align-content: center;
+
+    opacity: 1;
+    cursor: default;
+
+}
+.control-file input{
+    right:0;
+    bottom:0;
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+.control-file .control-filename{
+    overflow:hidden;
+}
+.table-input div.form-control, .table-input button{
+    border-radius:0px;
+}
+.control-checkbox, .control-radio{
+    display:flex;
+    cursor:pointer;
+    flex-direction:column;
+}
+.control-checkbox .control-label, .control-radio .control-label{
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+}
+.control-checkbox .control-label div, .control-radio .control-label div{
+    margin-right: 5px;
+}
+.control-option{
+    margin-bottom:10px;
+    cursor:pointer;
+}
+.checkbox-input{
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+}
+.checkbox-input span{
+    color: transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    top: inherit;
+}
+
+.checkbox-input-checked{
+    background-color: #333;
+}
+
+.radio-input{
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    
+}
+.radio-input span{
+    color: transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    top: inherit;
+}
+.radio-input-checked{
+    background-color: #333;
+}
+p.has-error{
+    color:#a94442;
+    font-weight: bold;
+}
+p.has-success{
+    color: #3c763d;
+    font-weight: bold;
+} 
+.has-error .checkbox-input-checked, .has-error .radio-input-checked{
+    background-color:#a94442;
+}
+.has-success .checkbox-input-checked,.has-success .radio-input-checked{
+    background-color: #3c763d;
+}
+.has-error .checkbox-input, .has-error .radio-input, .has-error button{
+    border-color: #a94442;
+}
+.has-success .checkbox-input,.has-success .radio-input, .has-success button{
+    border-color: #3c763d;
+}
+.has-error button{
+    color: #a94442;
+}
+.has-success button{
+    color: #3c763d;
+}
+
+td .form-group{
+    margin:0px;
+}
+
+.flex-table{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    /* margin-top:1px; */
+}
+.flex{
+    display:flex;
+}
+.flex-table-row{
+    /* margin-top:1px; */
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+.flex-table-header .flex-table-cell{
+    align-items:center;
+}
+.flex-table-cell{
+    width:100%;
+    margin: 10px;
+    display:flex;
+    align-items:center;
+    display: block;
+    padding: 10px;
+}
+.flex-table-cell .form-group{
+    margin:0px;
+}
+.flex-table-cell-end{
+    width:10%;
+}
+.flex-justify-center{
+    justify-content:center;
+}
+.flex-justify-start{
+    justify-content:flex-start;
+}
+.width-initial{
+    width:initial;
+}
+.flex-align-bottom{
+    align-items:flex-end;
+}
+table.no-padding td, table.no-padding th{
+    padding:0px;
+}
+.flex-table-cell span,.flex-table-row span,.flex-table span{
+    padding:10px;
+}
+.flex-table-cell .control-date span, .flex-table-cell-end span, .control-select span, .control-radio span{
+    padding:0px;
+}
+.flex-direction-column{
+    flex-direction: column;
+}
+.no-margin{
+    margin:0px;
+}
+.no-padding-left{
+    padding-left:0px !important;
+}
+.no-padding-right{
+    padding-right:0px !important;
+}
+.no-margin-left{
+    margin-left:0px;
+}
+.no-margin-right{
+    margin-right:0px;
+}
+.border-left-bottom{
+    border-color: #ddd;
+    border-left-style:solid;
+    border-bottom-style:solid;
+    border-width:1px;
+    
+}
+.border-top-right{
+    border-color: #ddd;
+    border-top-style:solid;
+    border-right-style:solid;
+    border-width:1px;
+}
+.border-top-bottom{
+    border-color: #ddd;
+    border-top-style:solid;
+    border-bottom-style:solid;
+    border-width:1px;
+}
+.border-right{
+    border-color: #ddd;
+    border-right-style:solid;
+    border-width:1px;
+}
+.border-left{
+    border-color: #ddd;
+    border-left-style:solid;
+    border-width:1px;
+}
+.border-bottom{
+    border-color: #ddd;
+    border-bottom-style:solid;
+    border-width:1px;
+}
+.font-bold{
+    font-weight:700;
+}
+.disabled {
+	background: #eee;
+}
+.ui-datepicker{ 
+    background-color: white;
+    border: 1px solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+.align-center{
+	text-align:center;
+}
+
+.input-multi-select button span{
+    white-space: normal;
+    text-align: left;
+}
+.trainingRow {
+    margin-top: 5px;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.modal-medium {
+    width: 900px;
+}
+
+.row-block {
+    width: 100%;
+    display: inline-block;
+}
+
+table.dataTable>thead>tr>th {
+    vertical-align: top;
+}
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
+    cursor: pointer;
+    *cursor: hand
+}
+
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc_disabled, table.dataTable thead .sorting_desc_disabled {
+    background-repeat: no-repeat;
+    background-position: center right
+}
+
+table.dataTable thead .sorting {
+    background-image: url("datatable/DataTables-1.10.11/images/sort_both.png")
+}
+
+table.dataTable thead .sorting_asc {
+    background-image: url("datatable/DataTables-1.10.11/images/sort_asc.png")
+}
+
+table.dataTable thead .sorting_desc {
+    background-image: url("datatable/DataTables-1.10.11/images/sort_desc.png")
+}
+
+table.dataTable thead .sorting_asc_disabled {
+    background-image: url("datatable/DataTables-1.10.11/images/sort_asc_disabled.png")
+}
+
+table.dataTable thead .sorting_desc_disabled {
+    background-image: url("datatable/DataTables-1.10.11/images/sort_desc_disabled.png")
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    padding-top: 0.25em
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    *cursor: hand;
+    color: #333 !important;
+    border: 1px solid transparent;
+    border-radius: 2px
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    color: #333 !important;
+    border: 1px solid #979797;
+    background-color: white;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #dcdcdc));
+    background: -webkit-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: -moz-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: -o-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%)
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #666 !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: white !important;
+    border: 1px solid #ddd;
+    background-color: #428bca;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+    outline: none;
+    background-color: #428bca;
+    box-shadow: inset 0 0 3px #111
+}
+
+.dataTables_wrapper .dataTables_paginate .ellipsis {
+    padding: 0 1em
+}
+
+
+.dataTables_wrapper .dataTables_scroll {
+    clear: both
+}
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
+    *margin-top: -1px;
+    -webkit-overflow-scrolling: touch
+}
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
+    vertical-align: middle
+}
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th > div.dataTables_sizing, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td > div.dataTables_sizing {
+    height: 0;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: 1px solid #111
+}
+
+.dataTables_wrapper.no-footer div.dataTables_scrollHead table, .dataTables_wrapper.no-footer div.dataTables_scrollBody table {
+    border-bottom: none
+}
+
+.dataTables_wrapper:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: right;
+    margin: 20px 10px;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: left;
+    margin: 20px 10px;
+}
+
+.arrow-up:after {
+    content: '\25b2';
+    margin-left: 5px;
+}
+
+.arrow-down:after {
+    content: '\25bc';
+    margin-left: 5px;
+}
+
+.header_menu_align {
+    margin: 15px 10px;
+    font-size: 12pt;
+}
+
+.header_menu_align a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #000;
+}
+
+.header_menu_align a:hover {
+    color: #2a6496;
+}
+
+.datetimepicker-calendar-position ul {
+    top: 71px;
+
+}
+
+.checked-icon {
+    display: inline-block;
+    background: url('../img/validqual.png') no-repeat;
+    background-position: center;
+    background-size: 50%;
+    height: 32px;
+    width: 32px;
+}
+
+.edit-icon {
+    display: inline-block;
+    background: url('../img/edit.png') no-repeat;
+    height: 32px;
+    width: 32px;
+}
+
+.delete-icon {
+    display: inline-block;
+    background: url('../img/delete.png') no-repeat;
+    height: 32px;
+    width: 32px;
+}
+
+.view-icon {
+    display: inline-block;
+    background: url('../img/zoom.png') no-repeat;
+    height: 32px;
+    width: 32px;
+}
+
+@media screen and (max-width: 1415px) {
+    #userFormServiceInformation .control-label {
+        height: 50px;
+    }
+    #userFormServiceInformation .flex-table-cell-end {
+        padding-top: 50px !important;
+    }
+}
+
+/*chrome hide arrows*/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/*firefox hide arrows*/
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
+}
+
+.twolined-label .form-control {
+    margin-top:20px;
+}
+
+@-moz-document url-prefix() {
+    .form-control.control-date .glyphicon {
+        left:-12px;
+    }
+}
+
+.full-width .dropdown-menu {
+    min-width:100%;
+    max-width:100%;
+}
+
+.dropdown_search_hover_element:hover {
+    background-color: #d9ebf6;
+}
+
+.dropdown_search_hover_element {
+    background: none;
+    padding: 5px 15px;
+}
+
+.datetime-picker-dropdown{
+    width: 33.2%!important;
+    min-width: 33.2%!important;
+}

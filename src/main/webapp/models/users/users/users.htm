@@ -1,0 +1,79 @@
+<section>
+    <div class="container-fluid">
+        <a class="mg-bottom-10 btn btn-primary btn-md" href="{{baseUrl}}/app#/users/new" translate="users.users.add" ng-disabled="false"></a>
+
+        <div class="mg-bottom-10 btn btn-info btn-md" ng-click="vm.withFired()">
+            <span ng-show="!vm.isFired" translate="users.users.withFired"></span>
+            <span ng-show="vm.isFired" translate="users.users.withoutFired"></span>
+        </div>
+
+        <input type="text" class="mg-bottom-10 form-control pull-right"
+               ng-model="vm.searchString"
+               ng-change="vm.loadUsers()"
+               ng-model-options='{debounce: 1000}'
+               style="width:inherit"
+               placeholder="{{'users.users.search' | translate}}"
+        />
+
+        <div class="row department" ng-repeat="item in vm.userList">
+            <div class="depName col-sm-12" ng-if="item.value.length > 0">
+                <h3>
+                    <span>{{item.key}}</span>
+                    <span ng-if="item.value && item.value[0].departmentParentName">({{item.value[0].departmentParentName}})</span>
+                </h3>
+            </div>
+            <div ng-repeat="user in item.value"  class="box col-sm-6 col-md-5 col-lg-4" style="height:141px;">
+                <div class="box-inner box-content row" style="margin-right:0;">
+                    <div class="col-xs-5 col-sm-5">
+                        <img ng-if="user.photoId != null" ng-src="resources.html?id={{user.photoId}}&{{vm.generatingNewDate}}" width="120px" height="120px" align="top" />
+                        <img ng-if="user.photoId == null" ng-src="img/no_photo.png" width="120px" height="120px" align="top" />
+                    </div>
+                    <div class="col-xs-7 col-sm-7" style="padding:0;">
+                        <div class="usercardtext">
+                            <a href="{{baseUrl}}/app#/users/{{user.userId}}/view">{{user.fullName}}</a>
+                        </div>
+                        <div class="usercardtext" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 0;" title="{{user.positionName}}">{{user.positionName}}</div>
+                        <div ng-if="user.chief" style="padding:5px 0;" title="{{user.chief}}">
+                            <span translate="users.viewUser.general.chief"></span>
+                        </div>
+                        <div ng-class="{'user-active': user.userStatusId == 1, 'user-leave' : user.userStatusId == 2, 'user-fired' : user.userStatusId == 3, 'user-leave' : user.userStatusId == 4}">
+                            <div ng-if="user.userStatusId == 1" class="usercardtext" translate="users.users.active"></div>
+                            <div ng-if="user.userStatusId == 2" class="usercardtext" translate="users.users.leave"></div>
+                            <div ng-if="user.userStatusId == 3" class="usercardtext" translate="users.users.fired"></div>
+                            <div ng-if="user.userStatusId == 4" class="usercardtext" translate="users.users.unactive"></div>
+                        </div>
+                        <div>
+                            <div style="display: inline-block;">
+                                <a href="{{baseUrl}}/app#/users/{{user.userId}}">
+                                    <img alt="edit" src="img/edit.png" width="20px" height="20px">
+                                </a>
+                            </div>
+                            <div style="display: inline-block;" ng-if="vm.userList.currentUserId != user.userId">
+                                <div ng-switch="user.userStatusId">
+                                    <div    ng-switch-when="3"
+                                            ng-click="popoverReestablish.userId = user.userId; popoverReestablish.open = true"
+                                            popover-title="{{'users.users.reestablish' | translate}}"
+                                            popover-is-open="popoverReestablish.open && popoverReestablish.userId == user.userId"
+                                            popover-trigger="outsideClick"
+                                            uib-popover-template="popoverReestablish.templateUrl"
+                                            popover-append-to-body="true">
+                                        <img style="cursor: pointer" alt="reestablish" src="img/user/change_user-32.png" width="20px" height="20px">
+                                    </div>
+                                    <div    ng-switch-default
+                                            ng-click="popoverFire.userId = user.userId; popoverFire.open = true"
+                                            popover-title="{{'users.users.fire' | translate}}"
+                                            popover-is-open="popoverFire.open && popoverFire.userId == user.userId"
+                                            popover-trigger="outsideClick"
+                                            uib-popover-template="popoverFire.templateUrl"
+                                            popover-append-to-body="true">
+                                        <img style="cursor: pointer" alt="fire" src="img/user/remove_user-32.png" width="20px" height="20px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

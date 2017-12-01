@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="data/1010_roles.xml">
+
+    <changeSet id="0.0.1_1010" author="Ivan Shyrma">
+        <comment>Insert data into table "roles"</comment>
+        <insert tableName="roles" schemaName="${db.schema}">
+            <column name="id">1</column>
+            <column name="name">admin</column>
+        </insert>
+        <insert tableName="roles" schemaName="${db.schema}">
+            <column name="id">2</column>
+            <column name="name">user</column>
+        </insert>
+        <rollback>
+            <delete tableName="roles" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

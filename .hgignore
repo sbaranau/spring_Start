@@ -1,0 +1,14 @@
+syntax: glob
+**/target/**
+**/overlays/**
+**/.project
+**/.settings/**
+**/.classpath
+**/nbactions.xml
+**/nb-configuration.xml
+**/.idea/*
+.idea/*
+*.iml
+gwt-unitCache
+*.orig
+config.properties

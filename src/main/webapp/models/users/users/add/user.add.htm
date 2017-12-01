@@ -1,0 +1,282 @@
+<section>
+    <div>
+        <h2 style="margin: 0;" translate="users.addUser.title"></h2>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.general.title"></legend>
+                <div class="row">
+                    <div class="col-sm-12" style="display:inline-flex;">
+                        <ng-input style="margin-right:1%;"
+                                  ng-label="{{'users.addUser.general.surname' | translate}}"
+                                  ng-model="userForm.user.surname"
+                                  ng-type="text"
+                                  ng-required="true"
+                        />
+                        <ng-input style="margin-right:1%;"
+                                  ng-label="{{'users.addUser.general.name' | translate}}"
+                                  ng-model="userForm.user.name"
+                                  ng-type="text"
+                                  ng-required="true"
+                        />
+                        <ng-input style="margin-right:1%;"
+                                  ng-label="{{'users.addUser.general.middleName' | translate}}"
+                                  ng-model="userForm.user.middleName"
+                                  ng-type="text"
+                                  ng-required="true"
+                        />
+                        <ng-input-date ng-label="{{'users.addUser.general.birth' | translate}}"
+                                       ng-model="userForm.user.dateBirth"
+                                       ng-required="true"
+                        />
+                    </div>
+
+                    <div class="col-sm-12" style="display:inline-flex;">
+                        <ng-input style="margin-right:1%;"
+                                  ng-label="{{'users.addUser.general.phone' | translate}}"
+                                  ng-model="userForm.user.phone"
+                                  ng-type="phone"
+                        />
+                        <ng-input style="margin-right:1%;"
+                                  ng-label="{{'users.addUser.general.email' | translate}}"
+                                  ng-model="userForm.user.email"
+                                  ng-type="email"
+                        />
+                        <ng-input-file ng-label="{{'users.addUser.general.photo' | translate}}"
+                                       ng-model="userForm.photo"
+                                       ng-filename="userForm.filename"
+                                       ng-accept=".jpeg,.png,.gif,.jpg"
+                                       ng-removable="true"
+                        />
+                    </div>
+                    <div class="col-sm-12" style="display:inline-flex;">
+
+                        <label>
+                            <ng-checkbox    ng-label="{{'users.addUser.general.chief' | translate}}"
+                                            ng-model="userForm.user.chief"
+                            />
+                        </label>
+
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.serviceInformation.title"></legend>
+                <div class="row" ng-repeat="info in userForm.serviceInformation">
+
+                    <div div class="col-sm-12" style="display:inline-flex;">
+                        <ng-input-date style="min-width:230px;margin-right:1%;"
+                                       ng-model="info.dateReceipt"
+                                       ng-max="null"
+                                       ng-min="null"
+                                       ng-label="{{'users.addUser.serviceInformation.receiptDate' | translate}}"
+                        />
+
+                        <ng-input-select  style="margin-right:1%;"
+                                          ng-model="info.departmentId"
+                                          ng-items="departmentsList"
+                                          ng-function="vm.loadPosts(arg, $index)"
+                                          ng-label="{{'users.addUser.serviceInformation.department' | translate}}"
+                        />
+
+                        <ng-input-select style="margin-right:1%;"
+                                         ng-model="info.post"
+                                         ng-items="departmentPosts[$index]"
+                                         ng-label="{{'users.addUser.serviceInformation.postAndProfession' | translate}}"
+                        />
+
+                        <ng-input style="margin-right:1%;"
+                                  ng-model="info.numberOrder"
+                                  ng-label="{{'users.addUser.serviceInformation.order' | translate}}"
+                        />
+
+                        <ng-input-select style="margin-right:1%;"
+                                         ng-model="info.categoryId"
+                                         ng-items="vm.references.postCategoryList"
+                                         ng-label="{{'users.addUser.serviceInformation.category' | translate}}"
+                        />
+
+                    </div>
+                    <div class="flex-table-cell flex-table-cell-end" style="padding-top: 20px;">
+                        <span ng-if="settings.isEdit && !settings.pressedOnce && $index == userForm.serviceInformation.length-1"
+                              class="glyphicon glyphicon-plus"
+                              style="cursor: pointer; color: gray;"
+                        ></span>
+                        <span ng-if="userForm.serviceInformation.length > 1 && settings.pressedOnce && $index == userForm.serviceInformation.length-1"
+                              class="glyphicon glyphicon-minus"
+                              style="cursor: pointer; color: gray;"
+                        ></span>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.category.title"></legend>
+                <div ng-repeat="category in userForm.userCategories">
+                    <div class="flex-table-row">
+                        <div class="flex-table-cell">
+                            <ng-input-date ng-model="category.dateAssignment"
+                                           ng-label="{{'users.addUser.category.assignmentDate' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input ng-model="category.numberOrder"
+                                      ng-label="{{'users.addUser.category.number' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input-select ng-model="category.categoryId"
+                                             ng-items="categoryList"
+                                             ng-label="{{'users.addUser.category.category' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell flex-table-cell-end" style="padding-top: 20px;">
+                            <span class="pull-right glyphicon glyphicon-plus" ng-click="addCategory()" ng-if="$index == userForm.userCategories.length - 1" style="cursor:pointer"></span>
+                            <span class="pull-right glyphicon glyphicon-minus" ng-if="userForm.userCategories.length > 1" ng-click="removeCategory($index)" style="cursor:pointer"></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.alertsType.title"></legend>
+                <div>
+                    <label>
+                        <ng-checkbox ng-label="{{'users.addUser.alertsType.thresholdsExcess' | translate}}"
+                                     ng-model="userForm.user.sensorNotification.thresholdsExcess"
+                        />
+                    </label>
+                    <label>
+                        <ng-checkbox ng-label="{{'users.addUser.alertsType.nonresponseSensors' | translate}}"
+                                     ng-model="userForm.user.sensorNotification.nonresponseSensors"
+                        />
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.education.title"></legend>
+                <div ng-repeat="education in userForm.educations">
+                    <div class="flex-table-row">
+                        <div class="flex-table-cell">
+                            <ng-input ng-model="education.institution"
+                                      ng-max="180"
+                                      ng-label="{{'users.addUser.education.institution' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input ng-model="education.faculty"
+                                      ng-max="64"
+                                      ng-label="{{'users.addUser.education.qualification' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input ng-model="education.specialty"
+                                      ng-max="80"
+                                      ng-label="{{'users.addUser.education.specialty' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input-date ng-model="education.yearGraduation"
+                                           ng-label="{{'users.addUser.education.graduationDate' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input-select ng-model="education.typeId"
+                                             ng-items="vm.references.educationTypeList"
+                                             ng-label="{{'users.addUser.education.type' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell flex-table-cell-end" style="padding-top: 20px;">
+                            <span class="pull-right glyphicon glyphicon-plus" ng-click="addEducation()" ng-if="$index == userForm.educations.length - 1" style="cursor:pointer"></span>
+                            <span class="pull-right glyphicon glyphicon-minus" ng-if="userForm.educations.length > 1" ng-click="removeEducation($index)" style="cursor:pointer"></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.certification.title"></legend>
+                <div ng-repeat="certification in userForm.certifications">
+                    <div class="flex-table-row">
+                        <div class="flex-table-cell">
+                            <ng-input-date ng-model="certification.dateCertification"
+                                           ng-required="!!certification.certificationId"
+                                           ng-label="{{'users.addUser.certification.date' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input-select ng-model="certification.certificationId"
+                                             ng-items="vm.references.certificationList"
+                                             ng-label="{{'users.addUser.certification.name' | translate}}"
+                                             ng-placeholder="{{'users.addUser.certification.name' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input ng-model="certification.result"
+                                      ng-max="256"
+                                      ng-label="{{'users.addUser.certification.result' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input ng-model="certification.numberOrder"
+                                      ng-max="32"
+                                      ng-label="{{'users.addUser.certification.number' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell flex-table-cell-end" style="padding-top: 20px;">
+                            <span class="pull-right glyphicon glyphicon-plus" ng-click="addCertification()" ng-if="$index == userForm.certifications.length - 1" style="cursor:pointer"></span>
+                            <span class="pull-right glyphicon glyphicon-minus" ng-if="userForm.certifications.length > 1" ng-click="removeCertification($index)" style="cursor:pointer"></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="box box-inner box-content">
+            <fieldset>
+                <legend translate="users.addUser.jobsType.title"></legend>
+                <div ng-repeat="job in userForm.userJobs">
+                    <div class="flex-table-row" >
+                        <div class="flex-table-cell">
+                            <ng-input-date ng-model="job.date"
+                                           ng-label="{{'users.addUser.jobsType.date' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell">
+                            <ng-input-select ng-model="job.jobsId"
+                                             ng-items="typesJobs"
+                                             ng-label="{{'users.addUser.jobsType.types' | translate}}"
+                            />
+                        </div>
+                        <div class="flex-table-cell flex-table-cell-end" style="padding-top: 20px;">
+                            <span class="pull-right glyphicon glyphicon-plus" ng-click="addJob()" ng-if="$index == userForm.userJobs.length - 1" style="cursor:pointer"></span>
+                            <span class="pull-right glyphicon glyphicon-minus" ng-if="userForm.userJobs.length > 1" ng-click="removeJob($index)" style="cursor:pointer"></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-offset-9 col-sm-3">
+                <button ng-click="saveUser()"
+                        ng-disabled="valid == true"
+                        class="btn btn-primary pull-right"
+                        translate="users.addUser.save"
+                ></button>
+            </div>
+        </div>
+    </div>
+</section>

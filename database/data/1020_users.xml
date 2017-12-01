@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="data/1020_users.xml">
+
+    <changeSet id="0.0.1_1020" author="Ivan Shyrma">
+        <comment>Insert data into table "users"</comment>
+        <insert tableName="users" schemaName="${db.schema}">
+            <column name="login">admin</column>
+            <column name="password">$2a$10$03SSEYZVIjyGqA6vqM9h1OQpTNMgU/Ou6fIKK29PnPJ4EPCruCOFe</column>
+            <column name="name">Ivan</column>
+            <column name="surname">Ivanov</column>
+            <column name="middle_name">Ivanovich</column>
+            <column name="post">Director</column>
+            <column name="phone">+375297654321</column>
+        </insert>
+        <sql>
+        INSERT INTO ${db.schema}.user_roles (user_id, role_id) VALUES
+        (
+            (SELECT u.id FROM ${db.schema}.users u WHERE u."login"='admin'), 1
+        );
+        </sql>
+        <rollback>
+            <delete tableName="user_roles" schemaName="${db.schema}"/>
+            <delete tableName="users" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

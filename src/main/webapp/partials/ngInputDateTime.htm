@@ -1,0 +1,23 @@
+<div class="form-group full-width" ng-class="{'has-error' : valid == false, 'has-success': valid}">
+    <label class="control-label" ng-if="!!ngLabel">
+        {{ngLabel}}:
+        <span ng-if="ngRequired">*</span>
+    </label>
+    <div class="form-control control-date datetimepicker-calendar-position"
+         ng-class="{'form-control control-date' : !ngDisabled, 'disabled form-control control-date': ngDisabled}"
+         ng-click="open()"
+    >
+        <input type="text"
+               datetime-picker="dd MMM yyyy HH:mm"
+               placeholder="{{ngPlaceholder}}"
+               ng-readonly="true"
+               ng-model="ngModel"
+               is-open="isOpen"
+               ng-change="validate('change')"
+               ng-disabled="ngDisabled"
+               ng-required="ngRequired"
+        />
+        <span class="glyphicon glyphicon-calendar"></span>
+    </div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

@@ -1,0 +1,52 @@
+<section>
+    <div class="content-fluid">
+        <div class="box">
+            <div class="box-inner">
+                <div class="box-content" >
+                    <div class="box" style="text-align:right;">
+                        <div class="col-sm-2">
+                            <ng-input-date class="pull-right"
+                                           ng-model="vm.startDate"
+                                           ng-placeholder="{{'pagination.from' | translate}}"
+                                           ng-max="vm.endDate"
+                                           ng-required="true"
+                            />
+                        </div>
+                        <div class="col-sm-2">
+                            <ng-input-date class="pull-right"
+                                           ng-model="vm.endDate"
+                                           ng-placeholder="{{'pagination.to' | translate}}"
+                                           ng-max="null"
+                                           ng-min="vm.startDate"
+                                           ng-required="true"
+                            />
+                        </div>
+                        <div class="col-sm-8"></div>
+
+                    </div>
+                    <pagination-x id="id_emp_roster"
+                                  features="vm.pgX.features"
+                                  columns="vm.pgX.columns"
+                                  list="vm.taskList"
+                                  pagination-x="vm.pgX.pagination"
+                                  toolbar-options="vm.pgX.toolbarOptions"
+                                  export-options="vm.pgX.exportOptions"
+                                  page-size-options="vm.pgX.pageSizeOptions"
+                                  action-column-options="vm.pgX.actionColumnOptions"
+                                  action-handlers="vm.pgX.actionHandlers"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <td>
+        <a ng-if="vm.isShow(document.name, 'document.notice')" href="{{baseUrl}}/journal_notice_info.html?noticeId={{document.id}}">{{vm.getNameByCode(document.name)}}</a>
+        <a ng-if="vm.isShow(document.name, 'document.act.sample')" href="{{baseUrl}}/redirectSamplingAct.html?id={{document.id}}">{{vm.getNameByCode(document.name)}}</a>
+        <a ng-if="vm.isShow(document.name, 'document.journal.protocol')" href="{{baseUrl}}/journalProtocol/edit_journal_protocol.html?journalProtocolId={{document.id}}">{{vm.getNameByCode(document.name)}}</a>
+        <a ng-if="vm.isShow(document.name, 'document.protocol.test')" href="{{baseUrl}}/protocolTest.html?id={{document.id}}">{{vm.getNameByCode(document.name)}}</a>
+        <a ng-if="vm.isShow(document.name, 'document.protocol.tests.notification.permisson')" href="{{baseUrl}}/protocolTestNotification.html?id={{document.id}}&isAllowed=true">{{vm.getNameByCode(document.name)}}</a>
+        <a ng-if="vm.isShow(document.name, 'document.protocol.tests.notification.prohibition')" href="{{baseUrl}}/protocolTestNotification.html?id={{document.id}}&isAllowed=false">{{vm.getNameByCode(document.name)}}</a>
+        <a ng-if="vm.isShowArray(document.name, ['plan.develop.doc', 'develop.doc', 'review.doc'])" ui-sref="index.techDoc.process.edit({id:document.id})">{{document.readableName}}</a>
+        <a ng-if="vm.isShowArray(document.name, ['equipment.maintenance', 'equipment.repair'])" href="{{baseUrl}}/app#/equipments/{{document.id}}/view">{{vm.getNameByCode(document.name)}}</a>
+    </td>
+</section>

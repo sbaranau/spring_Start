@@ -1,0 +1,10 @@
+<div ng-class="{'bg-danger' : valid == false, 'bg-success' : valid == true}">
+    <ng-transclude ng-class="{'bg-danger' : valid == false, 'bg-success' : valid == true}"></ng-transclude>
+    <div class="flex-table-row" ng-class="{'bg-danger' : valid == false, 'bg-success' : valid == true}" ng-if="valid == false">
+        <div class="flex-table-cell" style="margin-top:0px;">
+            <p ng-class="{'bg-danger has-error' : valid == false, 'bg-success has-success' : valid == true}" style="margin:0px;">
+            {{message}}
+            </p>
+        </div>
+    </div>
+</div>

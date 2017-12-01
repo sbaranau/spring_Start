@@ -1,0 +1,1 @@
+mvn -P liquibase clean initialize liquibase:rollback -Dliquibase.rollbackCount=1

@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="julia.dao.TrainingDao">
+
+    <resultMap type="trainingView" id="trainingView">
+        <result property="id" column="id"/>
+        <result property="topic" column="topic"/>
+        <result property="organizationTeacherId" column="organization_teacher_id"/>
+        <result property="description" column="description"/>
+        <result property="date" column="date"/>
+        <result property="duration" column="duration"/>
+        <result property="typeTrainingId" column="type_training_id"/>
+        <result property="teacherUserId" column="teacher_user_id"/>
+        <result property="trainingResult" column="training_result"/>
+        <result property="trainingFinalDataId" column="training_final_data_id"/>
+        <association property="statusEmployment" javaType="statusEmployment">
+            <result property="id" column="ass_status_employment_id"/>
+            <result property="name" column="ass_status_employment_name"/>
+        </association>
+        <association property="typeTraining" javaType="typeTraining">
+            <result property="id" column="ass_type_training_id"/>
+            <result property="name" column="ass_type_training_name"/>
+        </association>
+    </resultMap>
+
+    <resultMap type="training" id="trainingFullView">
+        <id property="id" column="id"/>
+        <result property="topic" column="topic"/>
+        <result property="organizationTeacherId" column="organization_teacher_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="description" column="description"/>
+        <result property="date" column="date"/>
+        <result property="duration" column="duration"/>
+        <result property="typeTrainingId" column="type_training_id"/>
+        <collection property="userIds" ofType="long">
+            <id column="user_id"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="training" id="trainingNormal">
+        <id property="id" column="id"/>
+        <result property="topic" column="topic"/>
+        <result property="organizationTeacherId" column="organization_teacher_id"/>
+        <result property="description" column="description"/>
+        <result property="date" column="date"/>
+        <result property="duration" column="duration"/>
+        <result property="typeTrainingId" column="type_training_id"/>
+        <result property="teacherUserId" column="teacher_user_id"/>
+        <result property="dataId" column="data_id"/>
+    </resultMap>
+
+    <insert id="create" parameterType="training" keyProperty="id">
+        INSERT INTO ${db.schema}.training
+          (topic, organization_teacher_id, description, date, duration, type_training_id, teacher_user_id, data_id)
+        VALUES
+          (#{topic}, #{organizationTeacherId}, #{description}, #{date}, #{duration}, #{typeTrainingId}, #{teacherUserId}, #{dataId})
+    </insert>
+
+    <insert id="createTrainingUserDepartment">
+        INSERT INTO
+        ${db.schema}.training_users_departments
+        (training_id, user_id, department_id)
+        VALUES
+        (#{trainingId}, #{userId},
+        #{departmentId})
+    </insert>
+
+    <select id="read" parameterType="long" resultType="training">
+        SELECT
+          *
+        FROM ${db.schema}.training
+        WHERE
+          id = #{id}
+    </select>
+
+    <update id="update" parameterType="training">
+        UPDATE ${db.schema}.training
+        SET
+          topic = #{topic},
+          organization_teacher_id = #{organizationTeacherId},
+          description = #{description},
+          date = #{date},
+          duration = #{duration},
+          type_training_id = #{typeTrainingId},
+          teacher_user_id = #{teacherUserId},
+          data_id = #{dataId}
+        WHERE
+          id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM ${db.schema}.training_users_departments
+        WHERE
+          training_id = #{id};
+        DELETE FROM ${db.schema}.training_department_position
+        WHERE
+          training_id = #{id};
+          DELETE FROM ${db.schema}.training_final_users
+        WHERE
+          training_id = #{id};
+        DELETE FROM ${db.schema}.training
+        WHERE
+          id = #{id}
+    </delete>
+
+    <delete id="deleteTrainingForUserAndDep" parameterType="long">
+        DELETE FROM ${db.schema}.training_users_departments
+        WHERE
+          training_id = #{id};
+    </delete>
+
+    <select id="findAll" resultType="training">
+        SELECT
+        *
+        FROM
+        ${db.schema}.training
+    </select>
+
+    <select id="findAllWithFilter" resultType="training">
+        SELECT
+          *
+        FROM ${db.schema}.training t
+        WHERE
+          t.topic ilike '%' || #{search} || '%'
+          <if test="start != null">
+              AND t.date >= #{start}
+          </if>
+          <if test="end != null">
+              AND (t.date &lt;= #{end})
+          </if>
+        ORDER BY date ASC
+    </select>
+
+    <select id="findTrainingByUserId" resultMap="trainingNormal" parameterType="long">
+        SELECT DISTINCT
+        t.id, t.topic, t.organization_teacher_id,
+        t.description, t.date, t.duration,
+        t.type_training_id, t.teacher_user_id, t.data_id
+        FROM ${db.schema}.training t
+        LEFT JOIN ${db.schema}.training_users_departments tud ON tud.training_id = t.id
+        LEFT JOIN ${db.schema}.service_information si ON si.user_id = tud.user_id
+        WHERE tud.user_id = #{teacherUserId} AND t.date >= now()
+        UNION ALL
+        SELECT DISTINCT
+        t.id, t.topic, t.organization_teacher_id, t.description, t.date, t.duration,
+        t.type_training_id, t.teacher_user_id, t.data_id
+        FROM
+        ${db.schema}.training t
+        LEFT JOIN ${db.schema}.training_users_departments tud ON tud.training_id = t.id
+        LEFT JOIN ${db.schema}.service_information si ON si.department_id = tud.department_id
+        LEFT JOIN ${db.schema}.users us ON si.user_id = us.id
+        WHERE si.user_id = #{teacherUserId} AND t.date >= now()
+    </select>
+
+    <select id="findTrainingViewByUserId" resultMap="trainingView" parameterType="long">
+        SELECT
+          t.id,
+          t.date,
+          t.topic,
+          t.type_training_id,
+          tr.id as ass_type_training_id,
+          tr.name as ass_type_training_name,
+          tfu.training_result,
+          tfu.training_final_data_id
+        FROM ${db.schema}.training t
+          LEFT JOIN ${db.schema}.training_final_users tfu ON tfu.training_id = t.id
+          LEFT JOIN ${db.schema}.type_training tr ON t.type_training_id = tr.id
+        WHERE
+          tfu.user_id = #{userId}
+          AND
+          tfu.training_visited = TRUE;
+    </select>
+
+    <select id="findTrainingsByDepartmentId" resultMap="trainingView">
+        SELECT
+        t.id,
+        t.date,
+        t.topic,
+        t.type_training_id,
+        tr.id as ass_type_training_id,
+        tr.name as ass_type_training_name,
+        t.organization_teacher_id,
+        tfu.user_id,
+        tfu.training_result,
+        tfu.training_final_data_id
+        FROM
+        ${db.schema}.training t
+        LEFT JOIN
+        ${db.schema}.training_final_users tfu ON t.id = tfu.training_id
+        LEFT JOIN
+        ${db.schema}.type_training tr ON t.type_training_id = tr.id
+        WHERE tfu.user_id IN
+        (SELECT u.id
+        FROM
+        ${db.schema}.users u
+        LEFT JOIN
+        ${db.schema}.service_information si ON u.id = si.user_id
+        WHERE
+        si.department_id = #{departmentId}
+        AND si.date_receipt =
+        (SELECT MAX(date_receipt)
+        FROM
+        ${db.schema}.service_information
+        WHERE
+        user_id = u.id)) AND (t.date BETWEEN #{startDate} AND #{endDate})
+    </select>
+
+    <select id="findUserTrainingReportListByDepartmentIdAndDatePeriod" resultType="julia.dto.trainings.UserTrainingReportDTO">
+        WITH training_users AS (
+          SELECT
+            t.id                                               AS trainingId,
+            tud.user_id                                        AS userId,
+            d.name                                             AS departmentName,
+            t.topic                                            AS trainingTopic,
+            t.date                                             AS trainingDate,
+            teacher_user.surname || ' '
+                    || substring(teacher_user.name from 1 for 1) || '. '
+                    || substring(teacher_user.middle_name from 1 for 1) || '.'
+                                                               AS teacher_user_name,
+            organization_teacher.name                          AS organization_teacher_name
+          FROM ${db.schema}.training t
+          JOIN ${db.schema}.training_users_departments tud ON tud.training_id = t.id
+          LEFT JOIN ${db.schema}.users u ON u.id = tud.user_id
+          LEFT JOIN ${db.schema}.departments d ON d.id = tud.department_id
+          LEFT JOIN ${db.schema}.users teacher_user ON teacher_user.id = t.teacher_user_id
+          LEFT JOIN ${db.schema}.producer organization_teacher ON organization_teacher.id = t.organization_teacher_id
+          WHERE
+        <if test="departmentId != null and departmentId != 0">
+            tud.department_id = #{departmentId} AND
+        </if>
+            (t.date BETWEEN cast(#{startDate} as DATE) AND cast(#{endDate} as DATE))
+        )
+        SELECT
+            fu.id,
+            tu.departmentName,
+            tu.trainingDate,
+            tu.trainingTopic,
+            fu.training_description       AS description,
+            fu.training_result            AS result,
+            fu.training_visited           AS visited,
+            CASE
+              WHEN fu.training_id ISNULL
+              THEN tu.trainingid
+              ELSE fu.training_id
+            END                           AS trainingId,
+            CASE
+              WHEN fu.user_id ISNULL
+              THEN tu.userId
+              ELSE fu.user_id
+            END                           AS userId,
+            tu.teacher_user_name          AS teacher_user_name,
+            tu.organization_teacher_name  AS organization_teacher_name
+        FROM training_users tu
+        JOIN ${db.schema}.training_final_users fu ON fu.training_id = tu.trainingId AND fu.user_id = tu.userId
+        LEFT JOIN ${db.schema}.users u ON u.id = fu.user_id
+        <where>
+            <if test="visited != null">
+                fu.training_visited = #{visited}
+            </if>
+        </where>
+        ORDER BY tu.trainingDate ASC
+    </select>
+
+    <insert id="createTrainingDepartmentPost">
+        INSERT INTO
+            ${db.schema}.training_department_position
+            (training_id, dep_post_id)
+        VALUES
+            (#{trainingId}, #{depPostId})
+    </insert>
+
+    <delete id="deleteTrainingDepartmentPost" parameterType="long">
+        DELETE
+        FROM ${db.schema}.training_department_position
+        WHERE
+            training_id = #{trainingId};
+    </delete>
+    <select id="findDepartmentPostIdsByTrainingIdAndDepartment" resultType="julia.dto.references.SimpleReferenceDTO">
+        SELECT
+          tdp.dep_post_id AS id,
+          p.name AS name
+        FROM ${db.schema}.training_department_position tdp
+          LEFT JOIN ${db.schema}.department_position dep ON dep.post_id = tdp.dep_post_id
+          LEFT JOIN ${db.schema}.posts p ON p.id = tdp.dep_post_id
+        WHERE
+            dep.department_id = #{departmentId}
+            AND tdp.training_id = #{trainingId};
+    </select>
+    <select id="findUserIdsByTrainingIdAndDepartment" resultType="julia.dto.references.SimpleReferenceDTO">
+        SELECT
+          tup.user_id AS id,
+          u.surname || ' ' || u.name || ' ' || u.middle_name AS name
+        FROM ${db.schema}.training_users_departments tup
+          JOIN ${db.schema}.users u on u.id = tup.user_id
+        WHERE
+           tup.department_id = #{departmentId}
+           AND tup.training_id = #{trainingId};
+    </select>
+
+    <select id="findDepartmentPostIdsByTrainingId" resultType="long">
+        SELECT
+            tdp.dep_post_id
+        FROM
+            ${db.schema}.training_department_position tdp
+        WHERE
+            tdp.training_id = #{trainingId};
+    </select>
+
+    <insert id="updateDepartmentForUserInTraining">
+        UPDATE
+            ${db.schema}.training_users_departments
+        SET
+            department_id = #{newDepartmentId}
+        WHERE
+            training_id = #{trainingId}
+            AND user_id = #{userId}
+    </insert>
+
+    <delete id="deleteUserFromTraining">
+        DELETE FROM
+            ${db.schema}.training_users_departments
+        WHERE
+            training_id = #{trainingId}
+            AND user_id = #{userId}
+    </delete>
+
+    <select id="findUserIdsByTrainingId" resultType="long">
+        SELECT
+            tud.user_id
+        FROM
+            ${db.schema}.training_users_departments tud
+        WHERE
+            tud.training_id = #{trainingId};
+    </select>
+
+    <select id="findActiveUserIdsByTrainingId" resultType="long">
+        SELECT
+          tud.user_id
+        FROM
+          ${db.schema}.training_users_departments tud
+          JOIN ${db.schema}.training_final_users tfu ON tfu.user_id = tud.user_id
+        WHERE
+          tud.training_id = #{trainingId} AND
+          tfu.training_id = #{trainingId} AND
+          tfu.training_visited IS TRUE
+    </select>
+
+    <select id="findDepartmentListByTrainingId" parameterType="long" resultType="long">
+        SELECT DISTINCT ON (department_id)
+          department_id
+        FROM ${db.schema}.training_users_departments
+        WHERE
+          training_id = #{trainingId};
+    </select>
+
+    <select id="findUserListByTrainingId" resultType="julia.dto.trainings.UserTraining" parameterType="long">
+        WITH training_users AS (
+            SELECT
+              t.id                                               AS trainingId,
+              tud.user_id                                        AS userId,
+              u.surname || ' ' || u.name || ' ' || u.middle_name AS name,
+              tud.department_id                                  AS departmentId
+            FROM ${db.schema}.training t
+              JOIN ${db.schema}.training_users_departments tud ON tud.training_id = t.id
+              LEFT JOIN ${db.schema}.users u ON u.id = tud.user_id
+            WHERE t.id = #{trainingId}
+        )
+        SELECT
+          fu.id                                                       AS id,
+          fu.training_final_data_id                                   AS documentId,
+          fu.training_description                                     AS description,
+          fu.training_result                                          AS result,
+          fu.training_visited                                         AS visited,
+          fu.pass_date                                                AS passDate,
+          d.name                                                      AS documentName,
+          dep.name                                                    AS departmentName,
+          CASE WHEN u.name ISNULL
+            THEN tu.name
+          ELSE u.surname || ' ' || u.name || ' ' || u.middle_name END AS name,
+          CASE WHEN fu.training_id ISNULL
+            THEN tu.trainingid
+          ELSE fu.training_id END                                     AS trainingId,
+          CASE WHEN fu.user_id ISNULL
+            THEN tu.userId
+          ELSE fu.user_id END                                         AS userId
+        FROM training_users tu
+          LEFT JOIN ${db.schema}.training_final_users fu ON fu.training_id = tu.trainingId AND fu.user_id = tu.userId
+          LEFT JOIN ${db.schema}.data d ON d.id = fu.training_final_data_id
+          LEFT JOIN ${db.schema}.users u ON u.id = fu.user_id
+          LEFT JOIN ${db.schema}.departments dep ON dep.id = tu.departmentId
+    </select>
+
+    <select id="hasActiveUsers" resultType="boolean" parameterType="long">
+        SELECT
+          CASE WHEN count(tfu.id) > 0 THEN TRUE ELSE FALSE END
+        FROM ${db.schema}.training_final_users tfu
+        WHERE
+          tfu.training_id = #{trainingId} AND
+          tfu.training_visited IS TRUE
+    </select>
+
+    <update id="updateUserFinalTraining" parameterType="julia.dto.trainings.UserTraining">
+        UPDATE ${db.schema}.training_final_users
+        SET
+            training_final_data_id = #{documentId},
+            training_result = #{result},
+            training_description = #{description},
+            training_visited = #{visited},
+            pass_date = #{passDate}
+        WHERE
+          id = #{id}
+    </update>
+
+    <insert id="createUserFinalTraining" parameterType="julia.dto.trainings.UserTraining">
+        INSERT INTO ${db.schema}.training_final_users
+          (
+            training_final_data_id,
+            training_description,
+            training_result,
+            training_visited,
+            user_id,
+            training_id
+          )
+        VALUES
+          (
+            #{documentId},
+            #{description},
+            #{result},
+            #{visited},
+            #{userId},
+            #{trainingId}
+          )
+    </insert>
+
+</mapper>

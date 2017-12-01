@@ -1,0 +1,31 @@
+<div ng-class="{'flex-table-row': ngShowMaxSize}">
+    <div class="form-group full-width ng-style:ngShowMaxSize && {width:'33%'};"  ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+        <label class="control-label" ng-if="ngLabel!=null">{{ngLabel}}</label>
+        <div class="full-width">
+            <fieldset>
+                <div ng-style="{'display': 'inline-block', 'width': ngRemovable ? '97%' : '100%', 'float' : 'left'}">
+                    <div class="btn btn-info form-control control-file">
+                        <div ng-if="modelName == null" class="control-filename">
+                            {{'partials.ngInputFile.selectFile' | translate}}
+                        </div>
+                        <div ng-if="modelName != null" class="control-filename">{{modelName}}</div>
+                        <input type="file" title="{{'partials.ngInputFile.loadFile' | translate}}" ng-disabled="ngDisabled" ngf-select ng-model="ngModel" ngf-accept="'{{ngAccept}}'">
+                        <div class="glyphicon glyphicon-file"></div>
+                    </div>
+                </div>
+                <div ng-if="ngRemovable" style="display: inline-block; float: left; height: 34px; width: 3%; line-height: 34px; text-align: right;">
+                    <img style="vertical-align: middle; cursor:pointer;"
+                             alt="{{'partials.ngInputFile.removeFile' | translate}}"
+                             title="{{'partials.ngInputFile.removeFile' | translate}}"
+                             src="img/delete_small.png"
+                             ng-click="removeFile();" />
+                </div>
+            </fieldset>
+        </div>
+        <small class="help-block" ng-if="valid == false">{{message}}</small>
+    </div>
+
+    <div ng-if="ngShowMaxSize">
+        <div style="margin-top:8px;"><span translate="maxSize"></span>{{maxSizeString}}</div>
+    </div>
+</div>

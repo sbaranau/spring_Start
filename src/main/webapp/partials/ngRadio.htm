@@ -1,0 +1,12 @@
+<div class="form-group full-width control-radio" ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <div class="control-label control-option" ng-repeat="item in ngItems track by item.id" ng-click="toggle(item.id)">
+        <div>
+            <span class="radio-input">
+                <span ng-if="ngModel == item.id" class="glyphicon glyphicon-plus radio-input-checked"></span>
+                <span ng-if="ngModel == null || ngModel != item.id" class="glyphicon glyphicon-plus"></span>
+            </span>
+        </div>
+        <div ng-if="ngLabel != null">{{item.name}}</div>
+    </div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

@@ -1,0 +1,21 @@
+<div class="form-group full-width" ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <label class="control-label" ng-if="ngLabel!=null">{{ngLabel}}:<span ng-if="ngRequired">*</span></label>
+    <select class="form-control"
+            ng-change="validate('change')"
+            ng-disabled="ngDisabled"
+            ng-required="ngRequired"
+            ng-model="ngModel"
+            ng-options="item[ngItemId] as item[ngItemLabel] for item in ngItems ">
+        <option ng-if="ngPlaceholder!=null" value="">- {{ngPlaceholder}} -</option>
+    </select>
+    <div ng-show="ngDepartment && ngPost" style="position:relative;margin:-27px 27px -27px 0;float:right;display:block;">
+        <span>
+            <span style="font-weight: 600">{{'modal.training.add.department' | translate}}</span>: {{ngDepartment}}
+        </span>
+        <span>|</span>
+        <span>
+            <span style="font-weight: 600">{{'modal.training.add.post' | translate}}</span>: {{ngPost}}
+        </span>
+    </div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

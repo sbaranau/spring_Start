@@ -1,0 +1,38 @@
+<section>
+    <div class="sidebar-nav">
+        <div class="nav-canvas">
+
+            <ul class="nav nav-pills nav-stacked main-menu">
+                <li class="accordion"
+                    ng-repeat="item in vm.menu"
+                    ng-class="{'active': item.title.linked}"
+                >
+                    <a ng-click="vm.select(item)"
+                       ng-if="vm.hasAccess(item.roles)"
+                       translate="{{item.title.name}}"
+                    ></a>
+                    <ul ng-show="item.title.linked"
+                        class="nav nav-pills nav-stacked"
+                        style="display:block;"
+                    >
+                        <li ng-repeat="(key, value) in item.links"
+                            ng-class="{'active': value.linked}"
+                            ng-if="vm.hasAccess(value.roles)"
+                        >
+                            <a href="{{value.link}}"
+                               ng-show="!!value.link"
+                               ng-click="vm.selectLink(item, value)"
+                               translate="{{value.name}}"
+                            ></a>
+                            <a ng-show="!value.link"
+                               ng-click="vm.selectLink(item, value)"
+                               translate="{{value.name}}"
+                            ></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>

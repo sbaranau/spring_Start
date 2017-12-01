@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <bean id="yargOfficeIntegration" class="com.haulmont.yarg.formatters.impl.doc.connector.OfficeIntegration">
+        <constructor-arg value="${openoffice.path}" />
+        <constructor-arg>
+            <list>
+                <value>${openoffice.port}</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="yargFormatterFactory" class="com.haulmont.yarg.formatters.factory.DefaultFormatterFactory">
+        <property name="officeIntegration" ref="yargOfficeIntegration" />
+    </bean>
+
+    <bean id="yargSqlDataLoader" class="com.haulmont.yarg.loaders.impl.SqlDataLoader">
+        <constructor-arg ref="dataSource" />
+    </bean>
+
+    <bean id="yargScripting" class="com.haulmont.yarg.util.groovy.DefaultScriptingImpl" />
+
+    <bean id="yargGroovyDataLoader" class="com.haulmont.yarg.loaders.impl.GroovyDataLoader">
+        <constructor-arg ref="yargScripting" />
+    </bean>
+
+    <bean id="yargLoaderFactory" class="com.haulmont.yarg.loaders.factory.DefaultLoaderFactory">
+        <property name="dataLoaders">
+            <map>
+                <entry key="sql" value-ref="yargSqlDataLoader" />
+                <entry key="groovy" value-ref="yargGroovyDataLoader" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="yargReporting" class="com.haulmont.yarg.reporting.Reporting">
+        <property name="formatterFactory" ref="yargFormatterFactory" />
+        <property name="loaderFactory" ref="yargLoaderFactory" />
+    </bean>
+
+    <util:map id="yargReportSampleFilesMap" map-class="java.util.concurrent.ConcurrentHashMap" key-type="java.lang.String" value-type="java.lang.String">
+        <entry key="Журнал ремонта" value="Repair_journal_report_template.odt" />
+        <entry key="Карточка оборудования" value="Equipment_form_report_template.odt" />
+        <entry key="Журнал технического обслуживания" value="Maintenance_journal_report_template.odt" />
+        <entry key="Журнал метрологического контроля" value="Metrological_control_journal_report_template.odt" />
+        <entry key="Отчет по плану обучения" value="Training_report_template.odt" />
+        <entry key="Отчет по обучению" value="Training_reports_report_template.odt" />
+        <entry key="Отчет по списку обучающих" value="Training_teachers_report_template.odt" />
+        <entry key="Карточка сотрудника" value="User_card_template.odt" />
+        <entry key="Журнал уничтожения архивных документов" value="Document_destroy_act_template.odt" />
+    </util:map>
+
+</beans>

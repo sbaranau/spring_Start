@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="MAIL_ERROR_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.mail.errors.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="SMS_ERROR_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.sms.errors.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="SENSOR_ERROR_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.sensor.errors.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="JOURNAL_DOC_AUTO_ACTUALIZATION_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.journal_doc_auto_actualization.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="JOURNAL_DOC_AUTO_ARCHIVING_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.journal_doc_auto_archiving.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="TECH_DOCUMENT_AUTO_ARCHIVING_LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/${app.name}.tech_document_auto_archiving.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} %-5p %c: %m%n" />
+        </layout>
+    </appender>
+
+    <logger name="julia">
+        <level value="${log.level.julia}"/>
+    </logger>
+
+    <logger name="julia.dao">
+        <level value="${log.level.julia.dao}"/>
+    </logger>
+
+    <logger name="julia.service.mail">
+        <level value="error"/>
+        <appender-ref ref="MAIL_ERROR_FILE"/>
+    </logger>
+
+    <logger name="julia.service.sms">
+        <level value="error"/>
+        <appender-ref ref="SMS_ERROR_FILE"/>
+    </logger>
+
+    <logger name="julia.service.sensor.transaction">
+        <level value="error"/>
+        <appender-ref ref="SENSOR_ERROR_FILE"/>
+    </logger>
+
+    <logger name="julia.service.sensor.transaction">
+        <level value="${log.level.julia.sensor}"/>
+    </logger>
+
+    <logger name="by.tehnologia.modbus.transport">
+        <level value="error"/>
+        <appender-ref ref="SENSOR_ERROR_FILE"/>
+    </logger>
+
+    <logger name="by.tehnologia.modbus.transport">
+        <level value="${log.level.modbus}"/>
+    </logger>
+
+    <logger name="julia.service.job.ProcessActualizationJob" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="JOURNAL_DOC_AUTO_ACTUALIZATION_LOG_FILE"/>
+    </logger>
+
+    <logger name="julia.service.job.JournalDocArchivingJob" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="JOURNAL_DOC_AUTO_ARCHIVING_LOG_FILE"/>
+    </logger>
+
+    <logger name="julia.service.job.TechDocumentArchivingJob" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="TECH_DOCUMENT_AUTO_ARCHIVING_LOG_FILE"/>
+    </logger>
+
+    <root>
+        <level value="${log.level}" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</log4j:configuration>

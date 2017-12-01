@@ -1,0 +1,20 @@
+<div class="form-group full-width" ng-class="{'has-error' : valid == false, 'has-success': valid == true}">
+    <label class="control-label" ng-if="ngLabel!=null">{{ngLabel}}:<span ng-if="ngRequired">*</span></label>
+    <div class="form-control control-date"  ng-class="{'form-control control-date' : ngDisabled == false, 'disabled form-control control-date': ngDisabled == true}" ng-click="open(settings)">
+    <input  ng-model="ngModel"
+            ng-change="validate('change')"
+            ng-disabled="ngDisabled"
+            ng-required="ngRequired"
+            is-open="settings.open"
+            placeholder="{{ngPlaceholder}}"
+            uib-datepicker-popup="{{settings.format}}"
+            datepicker-options="settings"
+            datepicker-append-to-body="true"
+            close-text="{{'partials.inputDate.close' | translate}}"
+            clear-text="{{'partials.inputDate.clear' | translate}}"
+            current-text="{{'partials.inputDate.current' | translate}}"
+            type="text"></input>
+           <span class="glyphicon glyphicon-calendar"></span>
+           </div>
+    <small class="help-block" ng-if="valid == false">{{message}}</small>
+</div>

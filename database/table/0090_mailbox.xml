@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+  logicalFilePath="table/0090_mailbox.xml">
+
+    <changeSet id="0.0.1_0090" author="Vadim Marchuk">
+        <comment>Create table "mailbox"</comment>
+        <createTable tableName="mailbox" remarks="mailbox" schemaName="${db.schema}">
+            <column name="id" type="bigint" remarks="id" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="mailbox_pkey" nullable="false" />
+            </column>
+            <column name="subject" type="varchar" remarks="Тема письма">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="recipient" type="varchar" remarks="Кому">
+                <constraints nullable="false" />
+            </column>
+            <column name="html_content" type="varchar" remarks="Содержимое письма html">
+                <constraints nullable="false" />
+            </column>
+            <column name="text_content" type="varchar" remarks="Содержимое письма текстовое">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="integer" remarks="Статус письма">
+                <constraints nullable="false"
+                    foreignKeyName="status_fkey" references="${db.schema}.mail_status (id)"/>
+            </column>
+            <column name="date_of_status_change" type="timestamp with time zone" remarks="Дата изменения статуса">
+                <constraints nullable="false" />
+            </column>
+            <column name="error" type="varchar" remarks="Сообщение об ошибке"/>
+        </createTable>
+        <sql>
+            ALTER TABLE ${db.schema}.mailbox
+                ADD CONSTRAINT subject_ck CHECK (btrim(subject::text) != ''::text),
+                ADD CONSTRAINT recipient_ck CHECK (btrim(recipient::text) != ''::text),
+                ADD CONSTRAINT html_content_ck CHECK (btrim(html_content::text) != ''::text),
+                ADD CONSTRAINT text_content_ck CHECK (btrim(text_content::text) != ''::text),
+                ADD CONSTRAINT error_ck CHECK (btrim(error::text) != ''::text);
+        </sql>
+        
+        <rollback>
+            <dropTable tableName="mailbox" schemaName="${db.schema}"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
+
+
