@@ -21,20 +21,9 @@ function UserViewCtrl($scope, $state, UserService) {
     });
 
     vm.isNotificationExists = function () {
-        return vm.isThresholdsExcessExist() || vm.isNonresponseSensorsExist();
+        return vm.isThresholdsExcessExist();
     };
 
-    vm.isThresholdsExcessExist = function () {
-        if (vm.isLoaded) {
-            return vm.userData.user.sensorNotification.thresholdsExcess;
-        }
-    };
-
-    vm.isNonresponseSensorsExist = function () {
-        if (vm.isLoaded) {
-            return vm.userData.user.sensorNotification.nonresponseSensors;
-        }
-    };
 
     vm.isEmpty = function (data) {
         return !(data && data.length > 0)

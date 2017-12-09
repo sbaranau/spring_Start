@@ -103,8 +103,6 @@ function UserAddCtrl($scope, UserService, $http, $filter, $state,  FileUploadSer
 
             var photo = $scope.userForm.photo ? $scope.userForm.photo : null;
 
-            $scope.userForm.sensors = null;
-            $scope.userForm.userSensors = null;
             $scope.jobDescriptions = null;
             $scope.fileNameJD = null;
 

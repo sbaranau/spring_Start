@@ -121,8 +121,6 @@ function UserEditCtrl($scope, $http, $filter, $state, UserService,  modal, FileU
 
             var photo = $scope.userForm.photo ? $scope.userForm.photo : null;
 
-            $scope.userForm.sensors = null;
-            $scope.userForm.userSensors = null;
             $scope.jobDescriptions = null;
             $scope.fileNameJD = null;
 

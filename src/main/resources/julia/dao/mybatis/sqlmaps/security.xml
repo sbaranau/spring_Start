@@ -11,7 +11,7 @@
 		<result property="name" column="name" />
 		<result property="surname" column="surname" />
 		<result property="photo" column="photo" />
-		<result property="statusId" column="status_id" />
+		<result property="phone" column="phone" />
 		<collection property="authorities" javaType="collection"
 			ofType="simpleGrantedAuthority" resultMap="simpleGrantedAuthority" />
 	</resultMap>
@@ -30,13 +30,10 @@
 		r.name AS ROLE,
 		u.name,
 		u.surname,
-		u.photo,
-		u.status_id
+		u.phone
 		FROM ${db.schema}.users u
-		LEFT JOIN ${db.schema}.user_groups ug ON (ug.user_id = u.id)
-		LEFT JOIN ${db.schema}.groups g ON (ug.group_id = g.id)
-		LEFT JOIN ${db.schema}.group_roles gr ON gr.group_id = g.id
-		LEFT JOIN ${db.schema}.roles r ON gr.role_id = r.id
+		LEFT JOIN ${db.schema}.user_roles ur ON ur.user_id = u.id
+		LEFT JOIN ${db.schema}.roles r ON ur.role_id = r.id
 		WHERE u.login = #{login}
 	</select>
 

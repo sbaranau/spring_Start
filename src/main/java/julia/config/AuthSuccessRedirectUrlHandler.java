@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Хандлер для редиректа со страницы логина на главную страницу {/profile/task.html}
+ * Хандлер для редиректа со страницы логина на главную страницу {/profile/task/list}
  *
  * @author Pudul Yuriy
  */
@@ -39,13 +39,7 @@ public class AuthSuccessRedirectUrlHandler implements AuthenticationSuccessHandl
     }
 
     private void handle(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-         String targetUrl;
-
-        if(userService.get(AuthenticationUtils.getAuthentication().getId()).getDefaultPassword()){
-            targetUrl = "/app#/settings/password";
-        } else {
-            targetUrl = "/app#/profile/task/list";
-        }
+         String targetUrl = "/app#/settings/common";
 
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);

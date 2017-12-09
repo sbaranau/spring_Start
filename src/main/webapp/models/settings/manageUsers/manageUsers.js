@@ -35,9 +35,8 @@ function SettingsManageUsersCtrl($scope, UserService, PaginationXFactory, modal)
     };
 
     pgX.columns = [
-        {title:"settings.manageUsers.name",dataKey:"fullName",sortKey:"fullName",width:"30%"},
-        {title:"settings.manageUsers.post",dataKey:"positionName",sortKey:"positionName",width:"25%"},
-        {title:"settings.manageUsers.department",dataKey:"departmentName",sortKey:"departmentName",width:"25%"}
+        {title:"settings.manageUsers.name",dataKey:"fullName",sortKey:"fullName",width:"45%"},
+        {title:"settings.manageUsers.phone",dataKey:"phone",sortKey:"phone",width:"45%"}
     ];
     pgX.actionColumnOptions.colWidth = "20%";
     pgX.actionColumnOptions.actions = [

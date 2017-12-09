@@ -79,40 +79,6 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-4">
-                <div class="box box-inner box-content">
-                    <legend translate="users.viewUser.fixedEquipment"></legend>
-                    <div ng-show="vm.userData.userSensors">
-                        <ul>
-                            <li ng-repeat="userSensor in vm.userData.userSensors">
-                                <span>{{userSensor.name}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div ng-show="!vm.userData.userSensors">
-                        <span translate="users.viewUser.emptyData"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4">
-                <div class="box box-inner box-content">
-                    <legend translate="users.viewUser.notifyType.title"></legend>
-                    <div ng-show="vm.isNotificationExists()">
-                        <ul>
-                            <li ng-show="vm.isThresholdsExcessExist()">
-                                <span translate="users.viewUser.notifyType.thresholdsExcess"></span>
-                            </li>
-                            <li ng-show="vm.isNonresponseSensorsExist()">
-                                <span translate="users.viewUser.notifyType.nonresponseSensors"></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div ng-show="!vm.isNotificationExists()">
-                        <span translate="users.viewUser.emptyData"></span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

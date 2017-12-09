@@ -18,6 +18,8 @@ public class SecurityUser extends NamedEntity implements UserDetails {
 
     private String surname;
 
+    private String phone;
+
     private Long photo;
 
     private Long statusId;
@@ -116,5 +118,13 @@ public class SecurityUser extends NamedEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

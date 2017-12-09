@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private static final long fired = 3;
+
 
     @Autowired
     private SecurityDao securityDao;
@@ -26,8 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             if (userDetails == null) {
                 throw new UsernameNotFoundException("User not found - " + username);
-            } else if (userDetails.getStatusId() == fired) {
-                throw new UsernameNotFoundException("User fired - " + username);
             }
             return userDetails;
         } catch (Exception e) {

@@ -83,13 +83,9 @@
     </delete>
 
     <select id="findAllRolesByUserId" resultMap="role">
-        SELECT
-          r.*
-        FROM ${db.schema}.roles r
-          JOIN ${db.schema}.group_roles gr ON gr.role_id = r.id
-          JOIN ${db.schema}.user_groups ugr ON ugr.group_id = gr.group_id
-        WHERE
-          ugr.user_id = #{userId}
-        GROUP BY r.id
+        SELECT r.* FROM
+            ${db.schema}.roles r
+            JOIN ${db.schema}.user_roles ur ON ur.role_id = r.id
+        WHERE ur.user_id = #{userId} GROUP BY r.id
     </select>
 </mapper>

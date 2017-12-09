@@ -33,33 +33,4 @@ public class IndexController {
         return ".login";
     }
 
-    /**
-     * Управление трудовыми ресурсами
-     * 
-     * @return представление
-     */
-    @RequestMapping("/workforce.html")
-    public String getWorkforceMenu() {
-        return ".workforce";
-    }
-
-    /**
-     * Мониторинг перепадов давления
-     * 
-     * @return представление
-     */
-    @RequestMapping("/pressure.html")
-    public String getPressureMenu() {
-        return ".pressure";
-    }
-
-    /**
-     * Управление производством
-     * 
-     * @return представление
-     */
-    @RequestMapping("/production.html")
-    public String getProductionMenu() {
-        return ".production";
-    }
 }

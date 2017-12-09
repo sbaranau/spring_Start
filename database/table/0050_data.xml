@@ -22,13 +22,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="sensor_id"
-                                 baseTableName="data"
-                                 baseTableSchemaName="${db.schema}"
-                                 constraintName="data_sensors_sensor_id_fkey"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sensors"
-                                 referencedTableSchemaName="${db.schema}"/>
         <rollback>
             <dropTable tableName="data" schemaName="${db.schema}"/>
         </rollback>

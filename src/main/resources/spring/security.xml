@@ -24,10 +24,10 @@
         <intercept-url pattern="/**/*.html" access="isAuthenticated()"/>
         <intercept-url pattern="/**/*.json" access="isAuthenticated()"/>
         <intercept-url pattern="/app" access="isAuthenticated()"/>
-        <form-login login-page="/login.html" default-target-url="/profile/documents.html"
+        <form-login login-page="/login.html" default-target-url="/error.html"
                     authentication-failure-url="/login.html?error=true"
                     authentication-success-handler-ref="authSuccessRedirectUrlHandler"/>
-        <logout logout-success-url="/login.html" invalidate-session="true" logout-url="/logout.html"/>
+        <logout logout-success-url="/login.html" invalidate-session="true" logout-url="/trr.html"/>
     </http>
 
     <beans:bean id="userDetailsService" class="julia.service.UserDetailsServiceImpl"/>

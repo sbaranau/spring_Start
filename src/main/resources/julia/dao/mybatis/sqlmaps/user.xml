@@ -10,8 +10,6 @@
 		FROM ${db.schema}.users u
 	</sql>
 
-
-
 	<!-- queries -->
 
 	<insert id="create" parameterType="user" keyProperty="id">
@@ -23,12 +21,8 @@
 		surname,
 		middle_name,
 		phone,
-		email,
-		chief,
-		default_password,
-		date_birth,
-		photo,
-        status_id)
+		email
+	)
 		VALUES (
 		#{login},
 		#{password},
@@ -36,12 +30,8 @@
 		#{surname},
 		#{middleName},
 		#{phone},
-		#{email},
-		#{chief},
-		#{defaultPassword},
-		#{dateBirth},
-		#{photo},
-                #{statusId})
+		#{email}
+		)
 	</insert>
 
 	<select id="read" resultType="user" parameterType="long">
@@ -60,15 +50,8 @@
 		phone =
 		#{phone},
 		email =
-		#{email},
-		chief =
-		#{chief},
-		default_password = #{defaultPassword},
-		date_birth = #{dateBirth},
-		photo = #{photo},
-		status_id =
-		#{statusId}
-		WHERE id
+		#{email}
+			WHERE id
 		= #{id}
 	</update>
 
@@ -82,21 +65,6 @@
 		ORDER BY u.id
 	</select>
 
-	<select id="findAllWithoutFired" resultType="user">
-		<include refid="readTemplate" />
-		WHERE u.status_id != '3' AND u.id != 0
-		ORDER BY u.surname
-	</select>
-
-	<select id="findAllWithoutFiredWithGroup" resultType="user"
-		parameterType="long">
-		<include refid="readTemplate" />
-		LEFT JOIN ${db.schema}.user_groups u_g ON u.id = u_g.user_id
-		WHERE
-		u.status_id != '3' AND u_g.group_id = #{groupId}
-		ORDER BY u.id
-	</select>
-
 
 	<select id="findGroupsIds" parameterType="long" resultType="long">
 		SELECT
@@ -106,11 +74,6 @@
 		WHERE
 		user_id = #{id}
 	</select>
-
-	<delete id="removeSensors" parameterType="long">
-		DELETE FROM
-		${db.schema}.user_sensors WHERE user_id = #{id};
-	</delete>
 
 	<select id="loginExists" parameterType="string" resultType="boolean">
 		SELECT CASE WHEN EXISTS (SELECT id FROM ${db.schema}.users WHERE login
@@ -123,29 +86,7 @@
 	</select>
 
 
-	<select id="findByGroup" resultType="user">
-		SELECT DISTINCT
-		u.id,
-		u.login,
-		u.password,
-		u.name,
-		u.surname,
-		u.middle_name,
-		u.phone,
-		u.email,
-		u.chief,
-		u.default_password
-		FROM ${db.schema}.users u
-		LEFT JOIN
-		${db.schema}.user_groups u_g ON u.id = u_g.user_id
-		LEFT JOIN
-		${db.schema}.groups g ON u_g.group_id = g.id
-		WHERE g.id in
-		<foreach item="group" index="index" collection="groups" open="("
-			separator="," close=")">
-			#{group.id}
-		</foreach>
-	</select>
+
 
 	<update id="changePassword">
 		UPDATE ${db.schema}.users SET password = #{password}
@@ -170,235 +111,9 @@
 		email=#{email}
 	</select>
 
-	<select id="findByStatusId" resultType="user" parameterType="Long">
-		SELECT
-		*
-		FROM
-		${db.schema}.users
-		WHERE
-		status_id = #{statusId}
-	</select>
 
-	<update id="changeStatus">
-		UPDATE ${db.schema}.users SET status_id = #{statusId}
-		WHERE id = #{id}
-	</update>
 
-	<select id="findUserDepartmentByUserId" resultType="user"
-		parameterType="long">
-		SELECT
-		u.id,
-		u.login,
-		u.password,
-		u.name,
-		u.surname,
-		u.middle_name,
-		u.phone,
-		u.email,
-		u.chief,
-		u.default_password,
-		u.date_birth,
-		u.photo,
-		u.status_id,
-		si.department_id
-		FROM
-		${db.schema}.users u
-		LEFT JOIN
-		${db.schema}.service_information si ON si.user_id = u.id
-		WHERE u.id =
-		#{id}
-		AND si.date_receipt = (SELECT max(date_receipt)
-		FROM
-		${db.schema}.service_information WHERE user_id = #{id})
-	</select>
-
-	<select id="findAllByDepartmentId" resultType="user"
-		parameterType="long">
-		SELECT
-		u.id,
-		u.login,
-		u.password,
-		u.name,
-		u.surname,
-		u.middle_name,
-		u.phone,
-		u.email,
-		u.chief,
-		u.default_password,
-		u.date_birth,
-		u.photo,
-		u.status_id,
-		si.department_id
-		FROM
-		${db.schema}.users u
-		LEFT JOIN
-		${db.schema}.service_information si ON si.user_id = u.id
-		WHERE
-		si.department_id = #{departmentId}
-		AND si.date_receipt = (SELECT
-		max(date_receipt)
-		FROM
-		${db.schema}.service_information s WHERE user_id
-		= u.id)
-	</select>
-
-	<select id="findActiveByDepartmentId" resultType="user"
-			parameterType="long">
-		SELECT
-			u.id,
-			u.login,
-			u.password,
-			u.name,
-			u.surname,
-			u.middle_name,
-			u.phone,
-			u.email,
-			u.chief,
-			u.default_password,
-			u.date_birth,
-			u.photo,
-			u.status_id,
-			si.department_id
-		FROM
-			${db.schema}.users u
-		LEFT JOIN
-			${db.schema}.service_information si ON si.user_id = u.id
-		WHERE
-			si.department_id = #{departmentId}
-		AND si.date_receipt = (SELECT
-			max(date_receipt)
-			FROM
-			${db.schema}.service_information s WHERE user_id
-			= u.id)
-		AND u.status_id = 1
-	</select>
-
-	<select id="findByPostIdAndDate" resultType="user">
-		SELECT DISTINCT ON (u."id")
-			u."id",
-			u.login,
-			u.password,
-			u."name",
-			u.surname,
-			u.middle_name,
-			u.phone,
-			u.email,
-			u.chief,
-			u.default_password,
-			u.date_birth,
-			u.photo,
-			u.status_id,
-			si.post
-		FROM ${db.schema}.users AS u
-		INNER JOIN ${db.schema}.service_information AS si ON si.user_id = u."id"
-		<![CDATA[
-		WHERE date_receipt <= #{date} AND post = #{postId}
-		]]>
-		ORDER BY "id", date_receipt DESC
-	</select>
-	<select id="findUserByDepartmentIdAndReviewId" resultType="user">
-		SELECT
-		u.id,
-		u.login,
-		u.password,
-		u.name,
-		u.surname,
-		u.middle_name,
-		u.phone,
-		u.email,
-		u.chief,
-		u.default_password,
-		u.date_birth,
-		u.photo,
-		u.status_id
-		FROM
-		${db.schema}.users u
-		LEFT
-		JOIN
-		${db.schema}.service_information si ON si.user_id = u.id
-		WHERE
-		si.department_id = #{departmentId}
-		AND si.date_receipt = (SELECT
-		max(date_receipt)
-		FROM
-		${db.schema}.service_information s WHERE user_id
-		= u.id)
-		UNION
-		SELECT
-		u.id,
-		u.login,
-		u.password,
-		u.name,
-		u.surname,
-		u.middle_name,
-		u.phone,
-		u.email,
-		u.chief,
-		u.default_password,
-		u.date_birth,
-		u.photo,
-		u.status_id
-		FROM
-		${db.schema}.users u
-		JOIN ${db.schema}.process_review r on
-		r.reviewer_id = u.id
-		WHERE
-		r.id = #{reviewId}
-	</select>
-
-	<select id="getCurrentUserDepartment" parameterType="long"
-		resultType="long">
-
-		SELECT department_id FROM
-		(SELECT
-		date_receipt,
-		max(date_receipt) OVER(PARTITION BY user_id) AS max_date,
-		user_id,
-		department_id
-		FROM
-		${db.schema}.service_information ) AS mds
-		WHERE
-		max_date = date_receipt AND user_id = #{userId}
-
-	</select>
-	<select id="findUserByDepartmentIdAndPost" resultType="user" parameterType="long">
-        SELECT
-            u.id,
-            u.login,
-            u.password,
-            u.name,
-            u.surname,
-            u.middle_name,
-            u.phone,
-            u.email,
-			u.chief,
-			u.default_password,
-            u.date_birth,
-            u.photo,
-            u.status_id,
-            si.department_id
-        FROM
-            ${db.schema}.users u
-        LEFT JOIN
-            ${db.schema}.service_information si ON si.user_id = u.id
-        LEFT JOIN
-            ${db.schema}.department_position dp ON dp.post_id = si.post
-        WHERE
-            si.department_id = #{departmentId}
-            AND dp.department_id = #{departmentId}
-            <if test="postIds != null and !postIds.isEmpty()">
-                AND dp.id in
-                <foreach item="item" index="index" collection="postIds" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            AND si.date_receipt = (SELECT
-                                    max(date_receipt)
-                                   FROM
-                                    ${db.schema}.service_information s WHERE user_id = u.id)
-    </select>
-
-    <select id="findByFullNameAndDateBirth" resultType="user">
+  <select id="findByFullNameAndDateBirth" resultType="user">
         <include refid="readTemplate" />
         <where>
             <if test="name != null">
@@ -410,121 +125,38 @@
             <if test="middleName != null">
                 AND middle_name = #{middleName}
             </if>
-            <if test="dateBirth != null">
-                AND date_birth = #{dateBirth}
-            </if>
-        </where>
-    </select>
 
-    <select id="findUsersByDepartmentOrPost" resultType="user" parameterType="long">
-        SELECT
-            u.id,
-            u.login,
-            u.password,
-            u.name,
-            u.surname,
-            u.middle_name,
-            u.phone,
-            u.email,
-			u.chief,
-			u.default_password,
-            u.date_birth,
-            u.photo,
-            u.status_id,
-            si.department_id
-        FROM
-            ${db.schema}.users u
-        LEFT JOIN
-            ${db.schema}.service_information si ON si.user_id = u.id
-        LEFT JOIN
-            ${db.schema}.department_position dp ON dp.post_id = si.post AND dp.department_id = si.department_id
-        WHERE
-            si.date_receipt = (SELECT max(date_receipt)
-                                FROM ${db.schema}.service_information s
-                                WHERE user_id = u.id)
-            <if test="departmentId != null">
-                AND dp.department_id = #{departmentId}
-            </if>
-            <if test="postId != null">
-                AND dp.post_id = #{postId}
-            </if>
+        </where>
     </select>
 
 	<select id="findAllUserDTO" resultType="julia.dto.users.UserDTO" parameterType="julia.web.mvc.SearchUsersFilter">
 		SELECT
-		  d.id                                               AS departmentId,
-		  d.name                                             AS departmentName,
-		  dparent.id                                         AS departmentParentId,
-		  dparent.name                                       AS departmentParentName,
-		  p.id                                               AS positionId,
-		  p.name                                             AS positionName,
 		  u.id                                               AS userId,
-		  u.status_id                                        AS userStatusId,
 		  u.surname || ' ' || u.name || ' ' || u.middle_name AS fullName,
-		  u.photo                                            AS photoId,
-		  u.chief,
+		  u.phone                                            AS phone,
 		  u.login
-		FROM ${db.schema}.department_position dp
-		  LEFT JOIN ${db.schema}.departments d ON d.id = dp.department_id
-		  LEFT JOIN ${db.schema}.departments dparent ON d.parent_id = dparent.id
-		  LEFT JOIN ${db.schema}.posts p ON p.id = dp.post_id
-		  JOIN ${db.schema}.service_information si
-			ON
-			  si.date_receipt = (
-				SELECT
-					max(s.date_receipt)
-				FROM ${db.schema}.service_information s
-				WHERE
-					si.user_id = s.user_id
-			  )
-			  AND si.post = p.id
-			  AND si.department_id = d.id
-			  AND si.department_id NOTNULL
-			  AND si.post NOTNULL
-		  LEFT JOIN ${db.schema}.users u ON u.id = si.user_id
+		FROM  ${db.schema}.users u
 		  WHERE
-		  	(d.name ILIKE ('%' || #{searchString} || '%')
-		  	OR (u.surname || ' ' || u.name || ' ' || u.middle_name) ILIKE ('%' || #{searchString} || '%'))
-			<if test="withFired == false">
-				AND u.status_id != 3
-			</if>
-		ORDER BY d.name, fullName ASC OFFSET #{offset};
+		  	 (u.surname || ' ' || u.name || ' ' || u.middle_name) ILIKE ('%' || #{searchString} || '%')
+		ORDER BY fullName ASC OFFSET #{offset};
 	</select>
 
 	<select id="findUserDTO" resultType="julia.dto.users.UserDTO" parameterType="long">
 		SELECT
-		  d.id                                               AS departmentId,
-		  d.name                                             AS departmentName,
-		  dparent.id                                         AS departmentParentId,
-		  dparent.name                                       AS departmentParentName,
-		  p.id                                               AS positionId,
-		  p.name                                             AS positionName,
 		  u.id                                               AS userId,
-		  u.status_id                                        AS userStatusId,
 		  u.surname || ' ' || u.name || ' ' || u.middle_name AS fullName,
-		  u.photo                                            AS photoId,
-		  u.chief,
+		  u.phone                                            AS photoId,
 		  u.login
-		FROM ${db.schema}.department_position dp
-		  LEFT JOIN ${db.schema}.departments d ON d.id = dp.department_id
-		  LEFT JOIN ${db.schema}.departments dparent ON d.parent_id = dparent.id
-		  LEFT JOIN ${db.schema}.posts p ON p.id = dp.post_id
-		  JOIN ${db.schema}.service_information si
-			ON
-			  si.date_receipt = (
-				SELECT
-					max(s.date_receipt)
-				FROM ${db.schema}.service_information s
-				WHERE
-					si.user_id = s.user_id
-			  )
-			  AND si.post = p.id
-			  AND si.department_id = d.id
-			  AND si.department_id NOTNULL
-			  AND si.post NOTNULL
-		  LEFT JOIN ${db.schema}.users u ON u.id = si.user_id
+		FROM ${db.schema}.users u
 		  WHERE
 		  	u.id = #{userId}
+	</select>
+	<select id="findAllRolesByUserId" resultType="java.lang.String">
+		SELECT r.name
+		FROM ${db.schema}.users u
+			LEFT JOIN ${db.schema}.user_roles ur  on ur.user_id=u.id
+			LEFT JOIN ${db.schema}.roles r on ur.role_id=r.id
+		where u.id=#{userId}
 	</select>
 
 </mapper>
